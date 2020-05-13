@@ -1,2 +1,4 @@
 *.class
 *.log
+back-end/project/*
+back-end/target/*

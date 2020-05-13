@@ -1,4 +1,0 @@
-[0m[[0m[31merror[0m] [0m[0m/home/ezra/Documents/personal/Hexagon-Pioneers/app/services/Board.scala:22:7: ')' expected but string literal found.[0m
-[0m[[0m[31merror[0m] [0m[0m      "size"  -> size[0m
-[0m[[0m[31merror[0m] [0m[0m      ^[0m
-[0m[[0m[31merror[0m] [0m[0mone error found[0m
