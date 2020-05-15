@@ -1,8 +1,14 @@
 # Hexagon Pioneers
 
-This project was bootstrapped using the play-scala-starter-example.
+This project was bootstrapped using play-scala-starter-example and
+create-react-app.
+
+The overall model is oriented around the backend as a service, and the game
+communicates with it over its API (detailed below).
 
 ## Running
+
+### Backend
 
 Run this using [sbt](http://www.scala-sbt.org/). 
 
@@ -10,9 +16,27 @@ Run this using [sbt](http://www.scala-sbt.org/).
 sbt run
 ```
 
-And then go to <http://localhost:9000> to see the running web application.
+Using http://localhost:9000/ combined with any of the below endpoints, anyone
+can view the result of any given API call.
+
+### Frontend
+
+Run this using [npm](https://www.npmjs.com/).
+
+```bash
+cd ui
+npm start
+```
+
+And then navigate to http://localhost:3000 to see the basic frontend
 
 ## Developer Notes
+
 Use this for graphics
 https://medium.com/better-programming/creating-an-interactive-map-using-svg-and-css-94a688c11bd6
-http://snapsvg.io
+
+### API Endpoints
+
+- /board        = JSON representing the current board state
+- /player/:id   = JSON for a particular player
+
