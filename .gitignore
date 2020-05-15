@@ -1,4 +1,5 @@
 *.class
 *.log
-back-end/project/*
-back-end/target/*
+/project/project
+/project/target
+/target
