@@ -1,7 +1,7 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
-import Hexagon from './Hexagon.js';
+import Board from './Board.js';
+
 function App() {
     /* PROOF OF CONCEPT */
     const url = 'http://localhost:9000/board';
@@ -18,7 +18,7 @@ function App() {
     /**/
     return (
     <div className="App">
-      <Hexagon/>
+      <Board/>
     </div>
   );
 }
