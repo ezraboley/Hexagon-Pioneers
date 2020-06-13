@@ -40,11 +40,12 @@ class Player {
             requirements[res]--;
         }
         
-        return (requirements[config.WOOL] <== 0 &&
-            requirements[config.WOOD] <== 0 &&
-            requirements[config.BRICK] <== 0 &&
-            requirements[config.ORE] <== 0 &&
-            requirements[config.WHEAT] <== 0);
+        return (
+            requirements[config.WOOL] <= 0 &&
+            requirements[config.WOOD] <= 0 &&
+            requirements[config.BRICK] <= 0 &&
+            requirements[config.ORE] <= 0 &&
+            requirements[config.WHEAT] <= 0);
     }
 }
 module.exports.Player = Player;

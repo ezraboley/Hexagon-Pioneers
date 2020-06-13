@@ -1,10 +1,11 @@
 const {config} = require("./config.js");
+const {Resource} = require("./resource.js");
 
 class Tile {
     // pos is an object in this case!
     constructor(res, pos) {
-        if (!this.isResource(res)) {
-            console.log("invalid res");
+        if (!(res instanceof Resource)) {
+            throw "Invalid Resource";
             return null;
         }
 
