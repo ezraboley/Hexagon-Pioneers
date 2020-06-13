@@ -1,6 +1,7 @@
 import React from 'react';
 import './App.css';
 import Board from './Board.js';
+import Dashboard from './Dashboard.js';
 
 function App() {
     /* PROOF OF CONCEPT */
@@ -18,7 +19,9 @@ function App() {
     /**/
     return (
     <div className="App">
-      <Board/>
+      <Dashboard>
+        <Board/>
+      </Dashboard>
     </div>
   );
 }
