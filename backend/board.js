@@ -1,15 +1,9 @@
 const {config} = require('./config.js');
 const {Tile} = require( './tile.js');
 
-
-const coordToStr = (x,y,z) => `${x},${y},${z}`;
 const strToCoord = (str) => {
     const vals = str.split(',');
-    return {
-        x: parseInt(vals[0], 10),
-        y: parseInt(vals[1], 10),
-        z: parseInt(vals[2], 10)
-    };
+    return new Coordinate(vals[0], vals[1], vals[2]);
 };
 
 // Data structure for axial coordinates!
@@ -22,7 +16,7 @@ class Coordinate {
     }
 
     // Implement if needed
-    convertToCube() {
+    convertToAxial() {
         return null;
     }
 
@@ -30,7 +24,10 @@ class Coordinate {
     convertToOffset() {
         return null;
     }
-
+    
+    toString() {
+        return `${this.x},${this.y},${this.z}`;
+    }
 
 }
 
@@ -44,8 +41,8 @@ class Board {
             for (let j = -1 * size; j <= size; j++) {
                 for (let k = -1 * size; k <= size; k++) {
                     if (i + j + k === 0) {
-                        this.tiles[coordToStr(i,j,k)] = 
-                            new Tile(config.WOOL);
+                        this.tiles[new Coordinate(i,j,k)] = 
+                            new Tile(config.WOOL, {x: i, y: j, z: k});
                     }
                 }
             }

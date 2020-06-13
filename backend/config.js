@@ -6,4 +6,5 @@ module.exports.config = {
     WHEAT: "wheat",
     WOOL: "wool",
     BOARD_SIZE: 2,
+    COLORS: ["red", "blue", "green", "yellow"]
 }
