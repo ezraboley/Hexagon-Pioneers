@@ -129,7 +129,23 @@ export default function PersistentDrawerLeft(props) {
           </IconButton>
         </div>
         <Divider />
-        <h1>{props.userInfo.resourceCards}</h1>
+        <h2>Resources</h2>
+        <List>
+          {Object.keys(props.userInfo.hand.resourceCards).map((k) => (
+           <ListItem key={k}>
+              <ListItemText primary={k} secondary={props.userInfo.hand.resourceCards[k]}/>
+            </ListItem>
+          ))}
+        </List>
+        <Divider />
+        <h2>Actions</h2>
+        <List>
+          {['Build City', 'Build Road'].map((k) => (
+           <ListItem button key={k}>
+              <ListItemText primary={k}/>
+            </ListItem>
+          ))}
+        </List>
       </Drawer>
       <main
         className={clsx(classes.content, {
@@ -141,10 +157,3 @@ export default function PersistentDrawerLeft(props) {
     </div>
   );
 }
-        // <List>
-        //   {Object.keys(props.userInfo.resourceCards).map((k, i) => (
-        //    <ListItem button key={k}>
-        //       <ListItemText primary={k} />
-        //     </ListItem>
-        //   ))}
-        // </List>
