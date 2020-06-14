@@ -2,6 +2,7 @@ import React from 'react';
 import './App.css';
 import Board from './Board.js';
 import styled from 'styled-components';
+import Dashboard from './Dashboard.js';
 
 function App() {
     /* PROOF OF CONCEPT */
@@ -19,15 +20,13 @@ function App() {
     /**/
 
     return (
-    <AppContainer>
+    <div className="App">
+      <Dashboard>
         <Board/>
-    </AppContainer>
+      </Dashboard>
+    </div>
   );
 }
 
-const AppContainer = styled.div`
-    width: 100%;
-    height: 100%;
-`;
 
 export default App;
