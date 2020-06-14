@@ -17,10 +17,24 @@ function App() {
         console.log('errr');
     });
     /**/
+    // dummy data
+    const userInfo = {
+        hand: {
+            resourceCards: {
+                sheep: 0,
+                wheat: 1,
+                wood: 1,
+                brick: 1,
+                ore: 2,
+            }
+        }
+    };
+
+
     return (
     <div className="App">
-      <Dashboard>
-        <Board/>
+      <Dashboard userInfo={userInfo}>
+        <Board />
       </Dashboard>
     </div>
   );
