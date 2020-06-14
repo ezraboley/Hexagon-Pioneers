@@ -3,14 +3,15 @@ import React from 'react';
 /* FIXME: This is a very basic implementation of an SVG hexagon */
 export default class Hexagon extends React.Component {
 
-    static getPoints(x, y) {
+    static getPoints(centerX, centerY) {
         let corners = []
         /* Using degrees because floating point math in a 
          * for loop high key sucks. We also need to go one extra angle because
          * we have */
+        let y = centerY;// + 60;
+        let x = centerX;
         let radius = 60;
         for (let i = 1; i < 7; i++) {
-            console.log("debug: " + Hexagon.RADIUS);
             let angle_deg = 60 * i - 30;
             let angle_rad = Math.PI / 180 * angle_deg;
             corners.push({x:x + radius * Math.cos(angle_rad),

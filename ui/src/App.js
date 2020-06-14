@@ -1,10 +1,11 @@
 import React from 'react';
 import './App.css';
 import Board from './Board.js';
+import styled from 'styled-components';
 
 function App() {
     /* PROOF OF CONCEPT */
-    const url = 'http://localhost:9000/board';
+    const url = 'http://localhost:8000/board';
     fetch(url, {method: 'GET'}).then(
         response => response.json()
     ).then(
@@ -16,11 +17,17 @@ function App() {
         console.log('errr');
     });
     /**/
+
     return (
-    <div className="App">
-      <Board/>
-    </div>
+    <AppContainer>
+        <Board/>
+    </AppContainer>
   );
 }
+
+const AppContainer = styled.div`
+    width: 100%;
+    height: 100%;
+`;
 
 export default App;

@@ -1,6 +1,6 @@
 const {config} = require('./config.js');
 const {Tile} = require( './tile.js');
-
+const {Resource} = require('./resource.js');
 const strToCoord = (str) => {
     const vals = str.split(',');
     return new Coordinate(vals[0], vals[1], vals[2]);
@@ -37,12 +37,16 @@ class Coordinate {
 class Board {
     constructor(size) {
         this.tiles = {};
+        this.size = size;
+
+       // Follow this algo to improve speed to O(n^2)
+       // https://www.redblobgames.com/grids/hexagons/implementation.html#shape-hexagon
         for (let i = -1 * size; i <= size; i++) {
             for (let j = -1 * size; j <= size; j++) {
                 for (let k = -1 * size; k <= size; k++) {
                     if (i + j + k === 0) {
                         this.tiles[new Coordinate(i,j,k)] = 
-                            new Tile(config.WOOL, {x: i, y: j, z: k});
+                            new Tile(new Resource(config.WOOL), {x: i, y: j, z: k});
                     }
                 }
             }
