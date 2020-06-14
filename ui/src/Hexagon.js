@@ -17,7 +17,6 @@ export default class Hexagon extends React.Component {
             corners.push({x:x + radius * Math.cos(angle_rad),
                 y: y + radius * Math.sin(angle_rad)})
         } 
-        console.log(corners);  // TODO Remove, just debug
         return corners;
     }
     

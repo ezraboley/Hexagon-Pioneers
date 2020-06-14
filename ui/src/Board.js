@@ -1,5 +1,6 @@
 import React from 'react';
 import Hexagon from './Hexagon.js';
+import styled from 'styled-components';
 
 export default class Board extends React.Component {
 
@@ -73,11 +74,23 @@ export default class Board extends React.Component {
                 d={tileStr}
             />)
         return (
-            <div>
-                <svg viewBox="0 0 1000 1000" xmlns="http://www.w3.org/2000/svg">
+            <BoardContainer>
+                <Graphics viewBox="0 0 1000 1000" xmlns="http://www.w3.org/2000/svg">
                     {tiles}
-                </svg>
-            </div>
+                </Graphics>
+            </BoardContainer>
         );
     }
 }
+
+const Graphics = styled.svg`
+    height: 100vh;
+    width: 100%;
+
+`;
+
+const BoardContainer = styled.div`
+    position: absolute;
+    height: 100vh;
+    width: 100%;
+`;
