@@ -8,15 +8,16 @@
     "@testing-library/user-event": "^7.2.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
-    "react-scripts": "3.4.1"
+    "react-is": "^16.13.1",
+    "react-scripts": "3.4.1",
+    "styled-components": "^5.1.1"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "backend": 
-    "echo ===press ctrl-d to exit=== && cd .. && sbt run"
+    "backend": "echo ===press ctrl-d to exit=== && cd .. && sbt run"
   },
   "eslintConfig": {
     "extends": "react-app"

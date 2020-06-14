@@ -1,11 +1,12 @@
 import React from 'react';
 import './App.css';
 import Board from './Board.js';
+import styled from 'styled-components';
 import Dashboard from './Dashboard.js';
 
 function App() {
     /* PROOF OF CONCEPT */
-    const url = 'http://localhost:9000/board';
+    const url = 'http://localhost:8000/board';
     fetch(url, {method: 'GET'}).then(
         response => response.json()
     ).then(
@@ -30,7 +31,6 @@ function App() {
         }
     };
 
-
     return (
     <div className="App">
       <Dashboard userInfo={userInfo}>
@@ -39,5 +39,6 @@ function App() {
     </div>
   );
 }
+
 
 export default App;

@@ -12,22 +12,20 @@ export default class Board extends React.Component {
         this.state = {
             board: []
         }
-        this.fetchBoard();
     }
 
-
-    fetchBoard() {
-        // We should get this from a config or something
-        const url = 'http://localhost:9000/board';
+    componentDidMount() {
+        const url = 'http://localhost:8000/board';
         fetch(url, {method: 'GET'}).then(
             response => response.json()
         ).then(
             data => {
                 console.log("DATA");
-                console.log(data);
+                console.log(data.board);
                 this.setState({
-                    board: data.tiles
-                })
+                    board: data.board.tiles,
+                    size: data.board.size
+                });
                 console.log("BOARD STATE");
                 console.log(this.state.board);
             }
@@ -38,30 +36,38 @@ export default class Board extends React.Component {
         );
     }
 
-    buildBoard(xLimit, yLimit, zLimit) {
-/*        let xOffset = i % 2 === 0 ? this.START_X : this.START_X - Hexagon.WIDTH / 2;*/
-/*        let numHex = i % 2 === 0 ? 6 : 7;*/
+    buildBoard() {
+        if (this.state.board === undefined) return;
+        let positions = Object.keys(this.state.board);
         let pathStrs = [];
-        let c = 0;
-        // FIXME: Probably a better algo out there?
-        // Brute force generation
-        for (let x = (-1 * xLimit); x <= xLimit; x++) {
-            for (let y = (-1 * yLimit); y <= yLimit; y++) {
-                for (let z = (-1 * zLimit); z <= zLimit; z++) {
-                    if (x + y + z !== 0) continue;
-                    console.log({x: x, y: y, z: z});
-/*                    let points = Hexagon.getPoints((xOffset + x * Hexagon.WIDTH),*/
-/*                        this.START_Y + x * (Hexagon.HEIGHT * 0.75));*/
-/*                    pathStrs.push(Hexagon.buildDString(points));*/
-                }
+        console.log(positions);
+        console.log(this.state.board);
+        positions.forEach((pos) => {
+            console.log(pos);
+            let offset = 500;
+            if (this.state.board[pos].pos.z % 2 !== 0) {
+               offset = 500;
+            } else {
+                offset = 500;
             }
-        }
-        console.log(c);
+            console.log(500 + offset + this.state.board[pos].pos.x * Hexagon.WIDTH);
+            let {x,y,z} = this.state.board[pos].pos;
+            
+            let points = Hexagon.getPoints(
+                (offset + 
+                    (x-y) * Hexagon.WIDTH/2),
+                (500 + 
+                    (z) * (Hexagon.HEIGHT * 0.75)));
+            pathStrs.push(Hexagon.buildDString(points));
+
+        });
         return pathStrs;
     }
 
     render() {
-        let tiles = this.buildBoard(3,3,3).map((tileStr) => 
+        let board = this.buildBoard()
+        if (board === undefined) return <p>end</p>;
+        let tiles = board.map((tileStr) => 
             <Hexagon 
                 fill={this.COLORS[Math.floor(Math.random() * this.COLORS.length)]} 
                 d={tileStr}

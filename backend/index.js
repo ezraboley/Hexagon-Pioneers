@@ -6,7 +6,7 @@ const cors = require('cors');
 const express = require('express');
 
 const app = express();
-const port = 3000;
+const port = 8000;
 
 app.use(cors());
 
@@ -14,13 +14,17 @@ app.get('/', (req, res) => {
     res.send('Go to /new-game/:numPlayer for the game!');
 });
 
-app.get('/new-game/:numPlayers', (req, res) => {
+app.get('/board', (req, res) => {
     let b = new Board(config.BOARD_SIZE);
+    res.json({board: b});
+});
+
+app.get('/new-game/:numPlayers', (req, res) => {
     let players = [];
     for (let i = 0; i < req.params.numPlayers; i++) {
         players.push(new Player());
     }
-    res.json({board: b, players:players});
+    res.json({players:players});
 });
 
 app.get('/:player-ID/:action', (req, res) => {
