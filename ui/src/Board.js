@@ -4,7 +4,6 @@ import styled from 'styled-components';
 
 export default class Board extends React.Component {
 
-    COLORS = ["brown", "grey", "gold", "green", "lightgreen"];
     START_X = 100;
     START_Y = 100;
     
@@ -59,8 +58,10 @@ export default class Board extends React.Component {
                     (x-y) * Hexagon.WIDTH/2),
                 (500 + 
                     (z) * (Hexagon.HEIGHT * 0.75)));
-            pathStrs.push(Hexagon.buildDString(points));
-
+            pathStrs.push({
+                resource: this.state.board[pos].res, 
+                path: Hexagon.buildDString(points)
+            });
         });
         return pathStrs;
     }
@@ -68,25 +69,24 @@ export default class Board extends React.Component {
     render() {
         let board = this.buildBoard()
         if (board === undefined) return <p>end</p>;
-        let tiles = board.map((tileStr) => 
+        let tiles = board.map(({resource, path}) => 
             <Hexagon 
-                fill={this.COLORS[Math.floor(Math.random() * this.COLORS.length)]} 
-                d={tileStr}
+                resource={resource.type} 
+                d={path}
             />)
         return (
             <BoardContainer>
-                <Graphics viewBox="0 0 1000 1000" xmlns="http://www.w3.org/2000/svg">
+                <BoardGraphic viewBox="0 0 1000 1000" xmlns="http://www.w3.org/2000/svg">
                     {tiles}
-                </Graphics>
+                </BoardGraphic>
             </BoardContainer>
         );
     }
 }
 
-const Graphics = styled.svg`
+const BoardGraphic = styled.svg`
     height: 100vh;
     width: 100%;
-
 `;
 
 const BoardContainer = styled.div`

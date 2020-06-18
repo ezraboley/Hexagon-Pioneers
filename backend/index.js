@@ -1,9 +1,9 @@
+const cors = require('cors');
+const express = require('express');
+
 const {Board} = require('./board.js');
 const {config}  = require('./config.js');
 const {Player} = require('./player.js');
-
-const cors = require('cors');
-const express = require('express');
 
 const app = express();
 const port = 8000;

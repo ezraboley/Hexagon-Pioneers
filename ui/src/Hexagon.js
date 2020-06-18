@@ -3,6 +3,9 @@ import React from 'react';
 /* FIXME: This is a very basic implementation of an SVG hexagon */
 export default class Hexagon extends React.Component {
 
+    COLORS = {brick:"brown", ore:"grey", wheat:"gold", 
+        wood:"green", wool:"lightgreen"};
+
     static getPoints(centerX, centerY) {
         let corners = []
         /* Using degrees because floating point math in a 
@@ -39,9 +42,8 @@ export default class Hexagon extends React.Component {
          * Check out https://www.redblobgames.com/grids/hexagons/
          * for more awesome details! 
          */
-
         return (
-            <path fill={this.props.fill} stroke="black"
+            <path fill={this.COLORS[this.props.resource]} stroke="black"
                 d={this.props.d} />
         );
     }
