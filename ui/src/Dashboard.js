@@ -144,7 +144,7 @@ export default function PersistentDrawerLeft(props) {
           Actions
         </Typography>
         <List>
-          {['Build City', 'Build Road'].map((k) => (
+          {['Build Settlement', 'Build Road', 'End Turn'].map((k) => (
            <ListItem button key={k}>
               <ListItemText primary={k}/>
             </ListItem>
