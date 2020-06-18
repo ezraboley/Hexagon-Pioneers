@@ -129,7 +129,9 @@ export default function PersistentDrawerLeft(props) {
           </IconButton>
         </div>
         <Divider />
-        <h2>Resources</h2>
+        <Typography variant="h4" gutterBottom>
+          Resources
+        </Typography>
         <List>
           {Object.keys(props.userInfo.hand.resourceCards).map((k) => (
            <ListItem key={k}>
@@ -138,9 +140,11 @@ export default function PersistentDrawerLeft(props) {
           ))}
         </List>
         <Divider />
-        <h2>Actions</h2>
+        <Typography variant="h4" gutterBottom>
+          Actions
+        </Typography>
         <List>
-          {['Build City', 'Build Road'].map((k) => (
+          {['Build Settlement', 'Build Road', 'End Turn'].map((k) => (
            <ListItem button key={k}>
               <ListItemText primary={k}/>
             </ListItem>
