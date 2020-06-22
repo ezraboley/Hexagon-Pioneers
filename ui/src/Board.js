@@ -11,7 +11,7 @@ export default class Board extends React.Component {
         super();
         this.state = {
             board: [],
-            activeCorner: <svg/>
+            activeCorner: {x: 0, y:0, fill: "none", key: null}
         }
         this.clickHandler = this.clickHandler.bind(this);
     }
@@ -22,14 +22,10 @@ export default class Board extends React.Component {
             response => response.json()
         ).then(
             data => {
-                console.log("DATA");
-                console.log(data.board);
                 this.setState({
                     board: data.board.tiles,
                     size: data.board.size
                 });
-                console.log("BOARD STATE");
-                console.log(this.state.board);
             }
         ).catch(
             error => {
@@ -40,7 +36,7 @@ export default class Board extends React.Component {
 
     // A basic implementation of a way to check which corner
     // a user clicks. Could be made better, but it works!
-    clickHandler(e, points) {
+    clickHandler(e, points, pos) {
         e.persist();
         let minDistance = Infinity;
         let corner = {};
@@ -58,16 +54,11 @@ export default class Board extends React.Component {
             }
         })
         this.setState(
-            {activeCorner: 
-                <circle 
-                    cx={corner.x} 
-                    cy={corner.y} 
-                    r={6} 
-                    fill={"red"}
-                    stroke={"black"}
-                    strokeWidth={4}
-                    style={{zIndex: 2}}>
-                </circle>});
+            {activeCorner: {
+                x: corner.x,
+                y: corner.y,
+                fill: "red",
+                key: pos}});
     }
     
     buildBoard() {
@@ -85,14 +76,34 @@ export default class Board extends React.Component {
                     (x-y) * Hexagon.WIDTH/2),
                 (offset + 
                     (z) * (Hexagon.HEIGHT * 0.75)));
-            pathStrs.push( <Hexagon
-                handleClick={this.clickHandler}
-                resource= {this.state.board[pos].res.type} 
-                points= {points}
+            pathStrs.push( 
+                <Hexagon
+                    handleClick={this.clickHandler}
+                    resource= {this.state.board[pos].res.type} 
+                    points= {points}
+                    boardKey={pos}
                 />
             );
         });
         return pathStrs;
+    }
+
+    finalizeCorner() {
+        if (this.state.activeCorner.key === null) {
+           return;
+        }
+
+        let pos = this.state.activeCorner.key;
+
+        this.neighbors = [
+            {x: pos.x + 1, y: pos.y - 1, z: pos.z},
+            {x: pos.x + 1, y: pos.y, z: pos.z - 1},
+            {x: pos.x, y: pos.y + 1, z: pos.z - 1},
+            {x: pos.x - 1, y: pos.y + 1, z: pos.z},
+            {x: pos.x - 1, y: pos.y, z: pos.z + 1},
+            {x: pos.x, y: pos.y - 1, z: pos.z + 1},
+       ];
+      
     }
 
     render() {
@@ -103,7 +114,15 @@ export default class Board extends React.Component {
                 <BoardSpan/>
                 <BoardGraphic viewBox="0 0 600 600" xmlns="http://www.w3.org/2000/svg">
                     {board}
-                    {this.state.activeCorner}
+                    <circle 
+                        cx={this.state.activeCorner.x} 
+                        cy={this.state.activeCorner.y} 
+                        r={6} 
+                        fill={this.state.activeCorner.fill}
+                        stroke={"black"}
+                        strokeWidth={4}
+                        style={{zIndex: 2}}>
+                    </circle>
                 </BoardGraphic>
                 <BoardSpan/>
             </BoardContainer>
