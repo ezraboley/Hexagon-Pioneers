@@ -32,13 +32,18 @@ function App() {
     };
 
     return (
-    <div className="App">
-      <Dashboard userInfo={userInfo}>
-        <Board />
-      </Dashboard>
-    </div>
+   <AppContainer>
+      <Dashboard userInfo={userInfo}/>
+      <Board />
+   </AppContainer>
   );
 }
 
+
+const AppContainer = styled.div`
+    display: grid;
+    grid-template-row: 0fr 100%; 
+    height: 100%; 
+`;
 
 export default App;

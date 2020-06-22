@@ -6,7 +6,7 @@ const strToCoord = (str) => {
     return new Coordinate(vals[0], vals[1], vals[2]);
 };
 
-// Data structure for axial coordinates!
+// Data structure for cubic coordinates!
 class Coordinate {
     constructor(x, y, z) {
         this.x =  x;
@@ -39,6 +39,13 @@ class Board {
         this.tiles = {};
         this.size = size;
 
+        let testColors = [
+            config.WOOL, config.ORE,
+            config.BRICK, config.WOOD,
+            config.WHEAT
+        ];
+            
+        let rando = 0;
        // Follow this algo to improve speed to O(n^2)
        // https://www.redblobgames.com/grids/hexagons/implementation.html#shape-hexagon
         for (let i = -1 * size; i <= size; i++) {
@@ -46,7 +53,7 @@ class Board {
                 for (let k = -1 * size; k <= size; k++) {
                     if (i + j + k === 0) {
                         this.tiles[new Coordinate(i,j,k)] = 
-                            new Tile(new Resource(config.WOOL), {x: i, y: j, z: k});
+                            new Tile(new Resource(testColors[rando++ % testColors.length]), {x: i, y: j, z: k});
                     }
                 }
             }
