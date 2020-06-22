@@ -27,7 +27,7 @@ app.get('/new-game/:numPlayers', (req, res) => {
     res.json({players:players});
 });
 
-app.get('/:player-ID/:action', (req, res) => {
+app.get('/:id/:action', (req, res) => {
     // This is where you do stuff
 });
 

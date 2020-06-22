@@ -11,31 +11,46 @@ export default class Hexagon extends React.Component {
         /* Using degrees because floating point math in a 
          * for loop high key sucks. We also need to go one extra angle because
          * we have */
-        let y = centerY;// + 60;
+        let y = centerY; 
         let x = centerX;
         let radius = 60;
         for (let i = 1; i < 7; i++) {
             let angle_deg = 60 * i - 30;
             let angle_rad = Math.PI / 180 * angle_deg;
-            corners.push({x:x + radius * Math.cos(angle_rad),
-                y: y + radius * Math.sin(angle_rad)})
+            corners.push({
+                x:x + radius * Math.cos(angle_rad),
+                y: y + radius * Math.sin(angle_rad),
+                relX: 0,
+                relY: 0});
         } 
+        let minX = Infinity;
+        let minY = Infinity;
+        corners.forEach(({x, y}) => {
+            if (x < minX) minX = x;
+            if (y < minY) minY = y;
+        });
+
+        for (let i = 0; i < corners.length; i++) {
+            corners[i].relX = corners[i].x - minX;
+            corners[i].relY = corners[i].y - minY;
+        }
+
         return corners;
     }
     
-    /* Need to feed it a series of points 
-     * and it connects them!*/
-    static buildDString(points) {
-        // Need to M(ove) to the position of the first point 
-        let dStr = `M ${points[0].x},${points[0].y}`;
-        points.forEach((p) => {
+    constructor(props) {
+        super(props)
+        this.state = {activeCorner: <svg></svg>}
+        let dStr = `M ${this.props.points[0].x},${this.props.points[0].y}`;
+        this.props.points.forEach((p) => {
             // Connect each point with a L(ine)
             dStr += ` L ${p.x},${p.y}`; 
         });
         // and then z terminates!
         dStr += ` z`;
-        return dStr;
+        this.path = dStr;
     }
+
 
     render() {
         /* TODO cleanup, but this is basically how you make a hex grid
@@ -43,8 +58,14 @@ export default class Hexagon extends React.Component {
          * for more awesome details! 
          */
         return (
-            <path fill={this.COLORS[this.props.resource]} stroke="black"
-                d={this.props.d} />
+            <svg>
+                <path 
+                    onClick={(e) => this.props.handleClick(e,this.props.points)} 
+                    fill={this.COLORS[this.props.resource]} 
+                    stroke="black"
+                    d={this.path} />
+            {this.state.activeCorner}
+            </svg>
         );
     }
 }

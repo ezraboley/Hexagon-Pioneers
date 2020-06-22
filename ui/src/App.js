@@ -40,6 +40,8 @@ function App() {
 
 
 const AppContainer = styled.div`
+    display: grid;
+    grid-template-row: 0fr 100%; 
     height: 100%; 
 `;
 
