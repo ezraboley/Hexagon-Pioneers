@@ -60,7 +60,7 @@ export default class Hexagon extends React.Component {
         return (
             <svg>
                 <path 
-                    onClick={(e) => this.props.handleClick(e,this.props.points)} 
+                    onClick={(e) => this.props.handleClick(e, this.props.points, this.props.boardKey)} 
                     fill={this.COLORS[this.props.resource]} 
                     stroke="black"
                     d={this.path} />
