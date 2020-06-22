@@ -17,6 +17,7 @@ function App() {
         console.error(error);
         console.log('errr');
     });
+
     // dummy data
     const userInfo = {
         hand: {

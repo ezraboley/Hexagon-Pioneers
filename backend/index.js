@@ -27,8 +27,15 @@ app.get('/new-game/:numPlayers', (req, res) => {
     res.json({players:players});
 });
 
-app.get('/:player-ID/:action', (req, res) => {
+app.post('/game-action/:gameAction', (req, res) => {
     // This is where you do stuff
+    switch (req.params.gameAction) {
+    	case "end-game":
+    		res.json({notification: "Turn ended"});
+    		break;
+    	default:
+    		res.json({notification: "Action not recognized"});
+    }
 });
 
 app.listen(port, () => console.log(`Example app listening at http://localhost:${port}`))

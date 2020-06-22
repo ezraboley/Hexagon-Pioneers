@@ -17,6 +17,7 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import InboxIcon from '@material-ui/icons/MoveToInbox';
 import MailIcon from '@material-ui/icons/Mail';
+import Snackbar from '@material-ui/core/Snackbar';
 
 const drawerWidth = 240;
 
@@ -90,6 +91,20 @@ export default function PersistentDrawerLeft(props) {
     setOpen(false);
   };
 
+  const endTurn = () => {
+    const url = 'http://localhost:8000/game-action/end-game';
+    fetch(url, {
+      method: 'POST',
+    })
+    .then(data => data.json())
+    .then(data => {
+      console.log(data)
+    })
+    .catch((error) => {
+      console.error('Error:', error);
+    });
+  }
+
   return (
     <div className={classes.root}>
       <CssBaseline />
@@ -110,7 +125,7 @@ export default function PersistentDrawerLeft(props) {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap>
-            Persistent drawer
+            Hexagon Pioneers
           </Typography>
         </Toolbar>
       </AppBar>
@@ -129,7 +144,7 @@ export default function PersistentDrawerLeft(props) {
           </IconButton>
         </div>
         <Divider />
-        <Typography variant="h4" gutterBottom>
+        <Typography align='center' variant="h4" gutterBottom>
           Resources
         </Typography>
         <List>
@@ -140,12 +155,12 @@ export default function PersistentDrawerLeft(props) {
           ))}
         </List>
         <Divider />
-        <Typography variant="h4" gutterBottom>
+        <Typography align='center' variant="h4" gutterBottom>
           Actions
         </Typography>
         <List>
           {['Build Settlement', 'Build Road', 'End Turn'].map((k) => (
-           <ListItem button key={k}>
+           <ListItem button onClick={endTurn} key={k}>
               <ListItemText primary={k}/>
             </ListItem>
           ))}
