@@ -98,7 +98,8 @@ export default function PersistentDrawerLeft(props) {
     })
     .then(data => data.json())
     .then(data => {
-      console.log(data)
+      console.log(data);
+      props.handleNewSnack(data.notification)();;
     })
     .catch((error) => {
       console.error('Error:', error);

@@ -1,8 +1,16 @@
 import React from 'react';
+import { makeStyles } from '@material-ui/core/styles';
+import Snackbar from '@material-ui/core/Snackbar';
 import './App.css';
 import Board from './Board.js';
 import styled from 'styled-components';
 import Dashboard from './Dashboard.js';
+
+const useStyles = makeStyles((theme) => ({
+  close: {
+    padding: theme.spacing(0.5),
+  },
+}));
 
 function App() {
     /* PROOF OF CONCEPT */
@@ -31,10 +39,56 @@ function App() {
         }
     };
 
+  const [snackPack, setSnackPack] = React.useState([]);
+  const [open, setOpen] = React.useState(false);
+  const [messageInfo, setMessageInfo] = React.useState(undefined);
+
+  React.useEffect(() => {
+    if (snackPack.length && !messageInfo) {
+      // Set a new snack when we don't have an active one
+      setMessageInfo({ ...snackPack[0] });
+      setSnackPack((prev) => prev.slice(1));
+      setOpen(true);
+    } else if (snackPack.length && messageInfo && open) {
+      // Close an active snack when a new one is added
+      setOpen(false);
+    }
+  }, [snackPack, messageInfo, open]);
+
+  const handleNewSnack = (message) => () => {
+    console.log("snack handled");
+    setSnackPack((prev) => [...prev, { message, key: message }]);
+  };
+
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setOpen(false);
+  };
+
+  const handleExited = () => {
+    setMessageInfo(undefined);
+  };
+
+  const classes = useStyles();
+
     return (
    <AppContainer>
-      <Dashboard userInfo={userInfo}/>
+      <Dashboard userInfo={userInfo} handleNewSnack={handleNewSnack}/>
       <Board />
+      <Snackbar
+        key={messageInfo ? messageInfo.key : undefined}
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'left',
+        }}
+        open={open}
+        autoHideDuration={6000}
+        onClose={handleClose}
+        onExited={handleExited}
+        message={messageInfo ? messageInfo.message : undefined}
+      />
    </AppContainer>
   );
 }
