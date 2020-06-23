@@ -91,19 +91,51 @@ export default function PersistentDrawerLeft(props) {
     setOpen(false);
   };
 
-  const endTurn = () => {
-    const url = 'http://localhost:8000/game-action/end-game';
+  const handlePress = (button) => () => {
+    console.log('button handled' + button);
+    var url = 'http://localhost:8000/';
+    switch (button) {
+      case 'Build Settlement':
+        url = url.concat('game-action/build-settlement');
+        break;
+      case 'Build Road':
+        url = url.concat('game-action/build-road');
+        break;
+      case 'End Turn':
+        url = url.concat('game-action/end-game');
+        break;
+      default:
+        console.error("Cannot completed action " + button);
+        return;
+
+    }
+
     fetch(url, {
       method: 'POST',
     })
     .then(data => data.json())
     .then(data => {
-      console.log(data)
+      console.log(data);
+      props.handleNewSnack(data.notification)();;
     })
     .catch((error) => {
       console.error('Error:', error);
     });
   }
+
+  // const endTurn = () => {
+  //   fetch(url, {
+  //     method: 'POST',
+  //   })
+  //   .then(data => data.json())
+  //   .then(data => {
+  //     console.log(data);
+  //     props.handleNewSnack(data.notification)();;
+  //   })
+  //   .catch((error) => {
+  //     console.error('Error:', error);
+  //   });
+  // }
 
   return (
     <div className={classes.root}>
@@ -160,7 +192,7 @@ export default function PersistentDrawerLeft(props) {
         </Typography>
         <List>
           {['Build Settlement', 'Build Road', 'End Turn'].map((k) => (
-           <ListItem button onClick={endTurn} key={k}>
+           <ListItem button onClick={handlePress(k)} key={k}>
               <ListItemText primary={k}/>
             </ListItem>
           ))}
