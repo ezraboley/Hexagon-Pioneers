@@ -81,7 +81,7 @@ function App() {
         key={messageInfo ? messageInfo.key : undefined}
         anchorOrigin={{
           vertical: 'bottom',
-          horizontal: 'left',
+          horizontal: 'right',
         }}
         open={open}
         autoHideDuration={6000}

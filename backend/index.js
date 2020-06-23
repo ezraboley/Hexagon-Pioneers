@@ -30,6 +30,12 @@ app.get('/new-game/:numPlayers', (req, res) => {
 app.post('/game-action/:gameAction', (req, res) => {
     // This is where you do stuff
     switch (req.params.gameAction) {
+    	case "build-settlement":
+    		res.json({notification: "Settlement Built"});
+    		break;
+    	case "build-road":
+    		res.json({notification: "Road Built"});
+    		break;
     	case "end-game":
     		res.json({notification: "Turn ended"});
     		break;
