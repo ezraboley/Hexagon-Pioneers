@@ -99,7 +99,7 @@ export default function PersistentDrawerLeft(props) {
     
     const btnStr = button.trim().replace(/\s+/g, '-').toLowerCase()
     const url = `${config.url}game-action/${btnStr}`
-
+    const packet = {...props.boardState, ...props.activeCorner};
     fetch(url, {
         method: 'POST',
         headers: {

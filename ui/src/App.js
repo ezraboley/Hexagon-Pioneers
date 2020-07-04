@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState } from 'react';
+import {Coordinate} from './Board'
 import { makeStyles } from '@material-ui/core/styles';
 import Snackbar from '@material-ui/core/Snackbar';
 import './App.css';
@@ -14,7 +15,61 @@ const useStyles = makeStyles((theme) => ({
 
 function App() {    
 
-    // dummy data
+  function finalizeCorner(activeCorner) {
+    const pointIsEqual = (p1, p2) => {
+      let x1 = p1.x;
+      let x2 = p2.x;
+      let y1 = p1.y;
+      let y2 = p2.y;
+      
+      let margin = 5;
+
+      return (
+          (margin + x1 >= x2 && x2 >= x1 - margin)
+      && (margin + y1 >= y2 && y2 >= y1 - margin));
+    }
+
+    if (activeCorner.key === null) {
+       return;
+    }
+
+    let vals = activeCorner.key.split(',');
+    
+    let pos = {
+        x: parseInt(vals[0]), 
+        y: parseInt(vals[1]), 
+        z: parseInt(vals[2])
+    };//this.state.activeCorner.key;
+    let cornerX = activeCorner.x;
+    let cornerY = activeCorner.y;
+
+    let neighbors = [
+        new Coordinate(pos.x + 1, pos.y - 1, pos.z),
+        new Coordinate(pos.x + 1, pos.y,pos.z - 1),
+        new Coordinate(pos.x, pos.y + 1,pos.z - 1),
+        new Coordinate(pos.x - 1, pos.y + 1, pos.z),
+        new Coordinate(pos.x - 1, pos.y, pos.z + 1),
+        new Coordinate(pos.x, pos.y - 1, pos.z + 1),
+    ];
+    
+    let corners = [];
+    corners.push(new Coordinate(pos.x, pos.y, pos.z));
+
+    // Terrible, I know
+    neighbors.forEach((n) => {
+        if (this.state.board[n] === undefined) return;
+        for (let p of this.state.board[n].points) {
+            // Gotta do some fuzzy matching
+            if (this.pointIsEqual(p, {x: cornerX, y: cornerY})) {
+                corners.push(n);
+                break;
+            }
+        } 
+    });
+    return corners;
+}
+
+    // dummy data TODO move to another file
     const userInfo = {
         hand: {
             resourceCards: {
@@ -27,10 +82,13 @@ function App() {
         }
     };
 
-  const [snackPack, setSnackPack] = React.useState([]);
-  const [open, setOpen] = React.useState(false);
-  const [messageInfo, setMessageInfo] = React.useState(undefined);
-  const [boardState, setBoardState] = React.useState({});
+  const [snackPack, setSnackPack] = useState([]);
+  const [open, setOpen] = useState(false);
+  const [messageInfo, setMessageInfo] = useState(undefined);
+  const [board, setBoard] = useState([]);
+  const [boardSize, setBoardSize] = useState(0)
+  const [activeCorner, setActiveCorner] = useState({x: 0, y:0, fill: "none", key: null})
+
   
   React.useEffect(() => {
     if (snackPack.length && !messageInfo) {
@@ -44,6 +102,7 @@ function App() {
     }
   }, [snackPack, messageInfo, open]);
 
+
   React.useEffect(() => {
     const url = `${config.url}board`;
     fetch(url, {method: 'GET'}).then(
@@ -51,7 +110,9 @@ function App() {
     ).then(
         data=> 
         {
-            console.log(data)
+          console.log(data)
+            setBoard(data.board.tiles)
+            setBoardSize(data.board.size)
         }
     ).catch(error=> {
         console.error(error);
@@ -78,8 +139,12 @@ function App() {
 
     return (
    <AppContainer>
-      <Dashboard userInfo={userInfo} handleNewSnack={handleNewSnack}/>
-      <Board />
+      <Dashboard activeCorner={activeCorner} boardState={board} userInfo={userInfo} handleNewSnack={handleNewSnack}/>
+      {boardSize === 0 ? 
+        null : 
+        <Board activeCorner={activeCorner} size={boardSize} 
+        boardState={board} setBoardState={setBoard} setActiveCorner={setActiveCorner}/>
+      }
       <Snackbar
         key={messageInfo ? messageInfo.key : undefined}
         anchorOrigin={{
