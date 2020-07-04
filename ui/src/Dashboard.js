@@ -18,6 +18,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import InboxIcon from '@material-ui/icons/MoveToInbox';
 import MailIcon from '@material-ui/icons/Mail';
 import Snackbar from '@material-ui/core/Snackbar';
+import config from './config'
 
 const drawerWidth = 240;
 
@@ -83,6 +84,8 @@ export default function PersistentDrawerLeft(props) {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
 
+  const buttons = ['Build Settlement', 'Build Road', 'End Turn']
+
   const handleDrawerOpen = () => {
     setOpen(true);
   };
@@ -93,25 +96,16 @@ export default function PersistentDrawerLeft(props) {
 
   const handlePress = (button) => () => {
     console.log('button handled' + button);
-    var url = 'http://localhost:8000/';
-    switch (button) {
-      case 'Build Settlement':
-        url = url.concat('game-action/build-settlement');
-        break;
-      case 'Build Road':
-        url = url.concat('game-action/build-road');
-        break;
-      case 'End Turn':
-        url = url.concat('game-action/end-game');
-        break;
-      default:
-        console.error("Cannot completed action " + button);
-        return;
-
-    }
+    
+    const btnStr = button.trim().replace(/\s+/g, '-').toLowerCase()
+    const url = `${config.url}game-action/${btnStr}`
 
     fetch(url, {
-      method: 'POST',
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(props.boardState)
     })
     .then(data => data.json())
     .then(data => {
@@ -191,7 +185,7 @@ export default function PersistentDrawerLeft(props) {
           Actions
         </Typography>
         <List>
-          {['Build Settlement', 'Build Road', 'End Turn'].map((k) => (
+          {buttons.map((k) => (
            <ListItem button onClick={handlePress(k)} key={k}>
               <ListItemText primary={k}/>
             </ListItem>

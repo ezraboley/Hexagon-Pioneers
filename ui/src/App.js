@@ -5,26 +5,14 @@ import './App.css';
 import Board from './Board.js';
 import styled from 'styled-components';
 import Dashboard from './Dashboard.js';
-
+import config from './config'
 const useStyles = makeStyles((theme) => ({
   close: {
     padding: theme.spacing(0.5),
   },
 }));
 
-function App() {
-    /* PROOF OF CONCEPT */
-    const url = 'http://localhost:8000/board';
-    fetch(url, {method: 'GET'}).then(
-        response => response.json()
-    ).then(
-        data=> {
-            console.log(data)
-        }
-    ).catch(error=> {
-        console.error(error);
-        console.log('errr');
-    });
+function App() {    
 
     // dummy data
     const userInfo = {
@@ -42,7 +30,8 @@ function App() {
   const [snackPack, setSnackPack] = React.useState([]);
   const [open, setOpen] = React.useState(false);
   const [messageInfo, setMessageInfo] = React.useState(undefined);
-
+  const [boardState, setBoardState] = React.useState({});
+  
   React.useEffect(() => {
     if (snackPack.length && !messageInfo) {
       // Set a new snack when we don't have an active one
@@ -54,6 +43,20 @@ function App() {
       setOpen(false);
     }
   }, [snackPack, messageInfo, open]);
+
+  React.useEffect(() => {
+    const url = `${config.url}board`;
+    fetch(url, {method: 'GET'}).then(
+        response => response.json()
+    ).then(
+        data=> 
+        {
+            console.log(data)
+        }
+    ).catch(error=> {
+        console.error(error);
+    });
+  }, [])
 
   const handleNewSnack = (message) => () => {
     console.log("snack handled");

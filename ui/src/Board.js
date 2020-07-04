@@ -154,7 +154,6 @@ export default class Board extends React.Component {
                 }
             } 
         });
-        console.log(corners);
     }
 
     render() {
