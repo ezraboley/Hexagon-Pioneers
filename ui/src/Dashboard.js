@@ -188,7 +188,7 @@ export default function PersistentDrawerLeft(props) {
           Actions
         </Typography>
         <List>
-          {['Build Settlement', 'Build Road', 'End Turn'].map((k) => (
+          {props.possibleActions.map((k) => (
            <ListItem button onClick={props.handlePress(k)} key={k}>
               <ListItemText primary={k}/>
             </ListItem>

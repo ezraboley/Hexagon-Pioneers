@@ -158,11 +158,41 @@ function App() {
     });
   }
 
+<<<<<<< HEAD
+=======
+  const handleActionPress = (button) => () => {
+    console.log('button handled' + button);
+    var url = 'http://localhost:8000/';
+    switch (button) {
+      case 'Build Settlement':
+        url = url.concat('game-action/build-settlement');
+        break;  
+      case 'Build Road':
+        url = url.concat('game-action/build-road');
+        break;
+      case 'End Turn':
+        url = url.concat('game-action/end-game');
+        break;
+      default:
+        console.error("Cannot completed action " + button);
+        return;
+    }
+    sendPostToServer(url);
+  }
+
+  const possibleActions = ['Build Settlement', 'Build Road', 'End Turn'];
+
+
+>>>>>>> 1705ea0ec44b184a5b76432124703fa52aa3985e
   const classes = useStyles();
 
     return (
    <AppContainer>
+<<<<<<< HEAD
       <Dashboard activeCorner={activeCorner} handlePress={handlePress} boardState={board} userInfo={userInfo} handleNewSnack={handleNewSnack}/>
+=======
+      <Dashboard possibleActions={possibleActions} handlePress={handleActionPress} sendPostToServer={sendPostToServer} boardState={board} userInfo={userInfo} handleNewSnack={handleNewSnack}/>
+>>>>>>> 1705ea0ec44b184a5b76432124703fa52aa3985e
       {boardSize === 0 ? 
         null : 
         <Board activeCorner={activeCorner} size={boardSize} 
