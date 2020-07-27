@@ -107,20 +107,8 @@ export default function PersistentDrawerLeft(props) {
       default:
         console.error("Cannot completed action " + button);
         return;
-
     }
-
-    fetch(url, {
-      method: 'POST',
-    })
-    .then(data => data.json())
-    .then(data => {
-      console.log(data);
-      props.handleNewSnack(data.notification)();;
-    })
-    .catch((error) => {
-      console.error('Error:', error);
-    });
+    props.sendPostToServer(url);
   }
 
   // const endTurn = () => {
@@ -180,11 +168,13 @@ export default function PersistentDrawerLeft(props) {
           Resources
         </Typography>
         <List>
-          {Object.keys(props.userInfo.hand.resourceCards).map((k) => (
+        { 'hand' in props.userInfo &&
+          Object.keys(props.userInfo.hand.resourceCards).map((k) => (
            <ListItem key={k}>
               <ListItemText primary={k} secondary={props.userInfo.hand.resourceCards[k]}/>
             </ListItem>
-          ))}
+          ))
+        }
         </List>
         <Divider />
         <Typography align='center' variant="h4" gutterBottom>

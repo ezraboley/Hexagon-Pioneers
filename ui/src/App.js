@@ -27,21 +27,23 @@ function App() {
     });
 
     // dummy data
-    const userInfo = {
-        hand: {
-            resourceCards: {
-                sheep: 0,
-                wheat: 1,
-                wood: 1,
-                brick: 1,
-                ore: 2,
-            }
-        }
-    };
+    // const userInfo = {
+    //     hand: {
+    //         resourceCards: {
+    //             sheep: 0,
+    //             wheat: 1,
+    //             wood: 1,
+    //             brick: 1,
+    //             ore: 2,
+    //         }
+    //     }
+
+    // };
 
   const [snackPack, setSnackPack] = React.useState([]);
   const [open, setOpen] = React.useState(false);
   const [messageInfo, setMessageInfo] = React.useState(undefined);
+  const [userInfo, setUserInfo] = React.useState({userNumber: null});
 
   React.useEffect(() => {
     if (snackPack.length && !messageInfo) {
@@ -71,11 +73,26 @@ function App() {
     setMessageInfo(undefined);
   };
 
+  const sendPostToServer = (url) => {
+    fetch(url, {
+      method: 'POST',
+    })
+    .then(data => data.json())
+    .then(data => {
+      console.log(data);
+      handleNewSnack(data.notification)();;
+    })
+    .catch((error) => {
+      console.error('Error:', error);
+    });
+  }
+
+
   const classes = useStyles();
 
     return (
    <AppContainer>
-      <Dashboard userInfo={userInfo} handleNewSnack={handleNewSnack}/>
+      <Dashboard userInfo={userInfo} sendPostToServer={sendPostToServer}/>
       <Board />
       <Snackbar
         key={messageInfo ? messageInfo.key : undefined}
