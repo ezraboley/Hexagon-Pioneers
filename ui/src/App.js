@@ -148,13 +148,13 @@ function App() {
     });
   }
 
-    const handleActionPress = (button) => () => {
+  const handleActionPress = (button) => () => {
     console.log('button handled' + button);
     var url = 'http://localhost:8000/';
     switch (button) {
       case 'Build Settlement':
         url = url.concat('game-action/build-settlement');
-        break;
+        break;  
       case 'Build Road':
         url = url.concat('game-action/build-road');
         break;
@@ -168,12 +168,14 @@ function App() {
     sendPostToServer(url);
   }
 
+  const possibleActions = ['Build Settlement', 'Build Road', 'End Turn'];
+
 
   const classes = useStyles();
 
     return (
    <AppContainer>
-      <Dashboard handlePress={handleActionPress} sendPostToServer={sendPostToServer} activeCorner={activeCorner} boardState={board} userInfo={userInfo} handleNewSnack={handleNewSnack}/>
+      <Dashboard possibleActions={possibleActions} handlePress={handleActionPress} sendPostToServer={sendPostToServer} boardState={board} userInfo={userInfo} handleNewSnack={handleNewSnack}/>
       {boardSize === 0 ? 
         null : 
         <Board userInfo={userInfo} activeCorner={activeCorner} size={boardSize} 
