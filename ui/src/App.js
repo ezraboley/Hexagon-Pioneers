@@ -39,7 +39,7 @@ function App() {
         x: parseInt(vals[0]), 
         y: parseInt(vals[1]), 
         z: parseInt(vals[2])
-    };//this.state.activeCorner.key;
+    };
     let cornerX = activeCorner.x;
     let cornerY = activeCorner.y;
 
@@ -139,7 +139,7 @@ function App() {
     
     const btnStr = button.trim().replace(/\s+/g, '-').toLowerCase()
     const url = `${config.url}game-action/${btnStr}`
-    const packet = {board: {...boardState}, corner: finalizeCorner(board, activeCorner)};
+    const packet = {board: board, corner: finalizeCorner(board, activeCorner)};
     console.log(packet)
     fetch(url, {
         method: 'POST',
@@ -158,41 +158,11 @@ function App() {
     });
   }
 
-<<<<<<< HEAD
-=======
-  const handleActionPress = (button) => () => {
-    console.log('button handled' + button);
-    var url = 'http://localhost:8000/';
-    switch (button) {
-      case 'Build Settlement':
-        url = url.concat('game-action/build-settlement');
-        break;  
-      case 'Build Road':
-        url = url.concat('game-action/build-road');
-        break;
-      case 'End Turn':
-        url = url.concat('game-action/end-game');
-        break;
-      default:
-        console.error("Cannot completed action " + button);
-        return;
-    }
-    sendPostToServer(url);
-  }
-
-  const possibleActions = ['Build Settlement', 'Build Road', 'End Turn'];
-
-
->>>>>>> 1705ea0ec44b184a5b76432124703fa52aa3985e
   const classes = useStyles();
 
     return (
    <AppContainer>
-<<<<<<< HEAD
-      <Dashboard activeCorner={activeCorner} handlePress={handlePress} boardState={board} userInfo={userInfo} handleNewSnack={handleNewSnack}/>
-=======
-      <Dashboard possibleActions={possibleActions} handlePress={handleActionPress} sendPostToServer={sendPostToServer} boardState={board} userInfo={userInfo} handleNewSnack={handleNewSnack}/>
->>>>>>> 1705ea0ec44b184a5b76432124703fa52aa3985e
+      <Dashboard possibleActions={possibleActions} handlePress={handlePress} sendPostToServer={sendPostToServer} boardState={board} userInfo={userInfo} handleNewSnack={handleNewSnack}/>
       {boardSize === 0 ? 
         null : 
         <Board activeCorner={activeCorner} size={boardSize} 
