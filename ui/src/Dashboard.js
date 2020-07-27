@@ -174,7 +174,7 @@ export default function PersistentDrawerLeft(props) {
               <ListItemText primary={k} secondary={props.userInfo.hand.resourceCards[k]}/>
             </ListItem>
           ))
-        }
+        } 
         </List>
         <Divider />
         <Typography align='center' variant="h4" gutterBottom>

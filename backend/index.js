@@ -36,7 +36,7 @@ app.post('/game-action/:gameAction', (req, res) => {
     	case "build-road":
     		res.json({notification: "Road Built"});
     		break;
-    	case "end-game":
+    	case "end-turn":
     		res.json({notification: "Turn ended"});
     		break;
     	default:

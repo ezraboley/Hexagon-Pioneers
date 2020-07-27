@@ -1,6 +1,7 @@
 const {config} = require('./config.js');
 const {Tile} = require( './tile.js');
 const {Resource} = require('./resource.js');
+
 const strToCoord = (str) => {
     const vals = str.split(',');
     return new Coordinate(vals[0], vals[1], vals[2]);
