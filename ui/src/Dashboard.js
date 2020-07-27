@@ -91,47 +91,6 @@ export default function PersistentDrawerLeft(props) {
     setOpen(false);
   };
 
-<<<<<<< HEAD
-  const handlePress = (button) => () => {
-    console.log('button handled' + button);
-    
-    const btnStr = button.trim().replace(/\s+/g, '-').toLowerCase()
-    const url = `${config.url}game-action/${btnStr}`
-    const packet = {board: {...props.boardState}, corner: {...props.activeCorner}};
-    console.log(packet)
-    fetch(url, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(packet)
-    })
-    .then(data => data.json())
-    .then(data => {
-      console.log(data);
-      props.handleNewSnack(data.notification)();;
-    })
-    .catch((error) => {
-      console.error('Error:', error);
-    });
-  }
-
-  // const endTurn = () => {
-  //   fetch(url, {
-  //     method: 'POST',
-  //   })
-  //   .then(data => data.json())
-  //   .then(data => {
-  //     console.log(data);
-  //     props.handleNewSnack(data.notification)();;
-  //   })
-  //   .catch((error) => {
-  //     console.error('Error:', error);
-  //   });
-  // }
-
-=======
->>>>>>> 2f91734f6fe8af88e5e6a77fbf85db52165324b4
   return (
     <div className={classes.root}>
       <CssBaseline />
@@ -188,7 +147,7 @@ export default function PersistentDrawerLeft(props) {
           Actions
         </Typography>
         <List>
-          {props.possibleActions.map((k) => (
+          {['Build Settlement', 'Build Road', 'End Turn'].map((k) => (
            <ListItem button onClick={props.handlePress(k)} key={k}>
               <ListItemText primary={k}/>
             </ListItem>

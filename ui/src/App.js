@@ -15,6 +15,8 @@ const useStyles = makeStyles((theme) => ({
 
 function App() {    
 
+  const possibleActions = ["Build Town, Build Road, End Turn"]
+
   function finalizeCorner(board, activeCorner) {
     const pointIsEqual = (p1, p2) => {
       let x1 = p1.x;
@@ -162,7 +164,7 @@ function App() {
 
     return (
    <AppContainer>
-      <Dashboard possibleActions={possibleActions} handlePress={handlePress} sendPostToServer={sendPostToServer} boardState={board} userInfo={userInfo} handleNewSnack={handleNewSnack}/>
+      <Dashboard possibleActions={possibleActions} handlePress={handlePress} boardState={board} userInfo={userInfo} handleNewSnack={handleNewSnack}/>
       {boardSize === 0 ? 
         null : 
         <Board activeCorner={activeCorner} size={boardSize} 
