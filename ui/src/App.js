@@ -15,7 +15,7 @@ const useStyles = makeStyles((theme) => ({
 
 function App() {    
 
-  function finalizeCorner(activeCorner) {
+  function finalizeCorner(board, activeCorner) {
     const pointIsEqual = (p1, p2) => {
       let x1 = p1.x;
       let x2 = p2.x;
@@ -55,12 +55,11 @@ function App() {
     let corners = [];
     corners.push(new Coordinate(pos.x, pos.y, pos.z));
 
-    // Terrible, I know
     neighbors.forEach((n) => {
-        if (this.state.board[n] === undefined) return;
-        for (let p of this.state.board[n].points) {
+        if (board[n] === undefined) return;
+        for (let p of board[n].points) {
             // Gotta do some fuzzy matching
-            if (this.pointIsEqual(p, {x: cornerX, y: cornerY})) {
+            if (pointIsEqual(p, {x: cornerX, y: cornerY})) {
                 corners.push(n);
                 break;
             }
@@ -121,7 +120,6 @@ function App() {
 
 
   const handleNewSnack = (message) => () => {
-    console.log("snack handled");
     setSnackPack((prev) => [...prev, { message, key: message }]);
   };
 
@@ -136,11 +134,35 @@ function App() {
     setMessageInfo(undefined);
   };
 
+  const handlePress = (button) => () => {
+    console.log('button handled' + button);
+    
+    const btnStr = button.trim().replace(/\s+/g, '-').toLowerCase()
+    const url = `${config.url}game-action/${btnStr}`
+    const packet = {board: {...boardState}, corner: finalizeCorner(board, activeCorner)};
+    console.log(packet)
+    fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(packet)
+    })
+    .then(data => data.json())
+    .then(data => {
+      console.log(data);
+      handleNewSnack(data.notification)();;
+    })
+    .catch((error) => {
+      console.error('Error:', error);
+    });
+  }
+
   const classes = useStyles();
 
     return (
    <AppContainer>
-      <Dashboard activeCorner={activeCorner} boardState={board} userInfo={userInfo} handleNewSnack={handleNewSnack}/>
+      <Dashboard activeCorner={activeCorner} handlePress={handlePress} boardState={board} userInfo={userInfo} handleNewSnack={handleNewSnack}/>
       {boardSize === 0 ? 
         null : 
         <Board activeCorner={activeCorner} size={boardSize} 

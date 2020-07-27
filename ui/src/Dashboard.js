@@ -18,7 +18,6 @@ import ListItemText from '@material-ui/core/ListItemText';
 import InboxIcon from '@material-ui/icons/MoveToInbox';
 import MailIcon from '@material-ui/icons/Mail';
 import Snackbar from '@material-ui/core/Snackbar';
-import config from './config'
 
 const drawerWidth = 240;
 
@@ -84,8 +83,6 @@ export default function PersistentDrawerLeft(props) {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
 
-  const buttons = ['Build Settlement', 'Build Road', 'End Turn']
-
   const handleDrawerOpen = () => {
     setOpen(true);
   };
@@ -94,6 +91,7 @@ export default function PersistentDrawerLeft(props) {
     setOpen(false);
   };
 
+<<<<<<< HEAD
   const handlePress = (button) => () => {
     console.log('button handled' + button);
     
@@ -132,6 +130,8 @@ export default function PersistentDrawerLeft(props) {
   //   });
   // }
 
+=======
+>>>>>>> 2f91734f6fe8af88e5e6a77fbf85db52165324b4
   return (
     <div className={classes.root}>
       <CssBaseline />
@@ -175,19 +175,21 @@ export default function PersistentDrawerLeft(props) {
           Resources
         </Typography>
         <List>
-          {Object.keys(props.userInfo.hand.resourceCards).map((k) => (
+        { 'hand' in props.userInfo &&
+          Object.keys(props.userInfo.hand.resourceCards).map((k) => (
            <ListItem key={k}>
               <ListItemText primary={k} secondary={props.userInfo.hand.resourceCards[k]}/>
             </ListItem>
-          ))}
+          ))
+        } 
         </List>
         <Divider />
         <Typography align='center' variant="h4" gutterBottom>
           Actions
         </Typography>
         <List>
-          {buttons.map((k) => (
-           <ListItem button onClick={handlePress(k)} key={k}>
+          {['Build Settlement', 'Build Road', 'End Turn'].map((k) => (
+           <ListItem button onClick={props.handlePress(k)} key={k}>
               <ListItemText primary={k}/>
             </ListItem>
           ))}
