@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "frontend": "cd ui && npm start",
     "backend": "cd backend && npm run dev",
-    "test-backend": "mocha './backend/test/*.js"
+    "test-backend": "mocha './backend/test/*.js'"
   },
   "repository": {
     "type": "git",
