@@ -104,20 +104,21 @@ function App() {
 
 
   React.useEffect(() => {
-    const url = `${config.url}board`;
-    fetch(url, {method: 'GET'}).then(
-        response => response.json()
-    ).then(
-        data=> 
-        {
-          console.log(data)
-            setBoard(data.board.tiles)
-            setBoardSize(data.board.size)
-        }
-    ).catch(error=> {
-        console.error(error);
-    });
+    const getBoard = async () => {
+      const url = `${config.url}board`;
+      try {
+        let res = await fetch(url)
+        let data = await res.json()
+        console.log(data)
+        setBoard(data.board.tiles)
+        setBoardSize(data.board.size)
+      } catch (e) {
+        console.error(e)
+      }
+    }
+    getBoard()
   }, [])
+
 
   const handleNewSnack = (message) => () => {
     console.log("snack handled");

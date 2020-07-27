@@ -7,6 +7,7 @@ const {Player} = require('./player.js');
 
 const app = express();
 const port = 8000;
+const games = [];
 
 app.use(cors());
 
@@ -19,12 +20,11 @@ app.get('/board', (req, res) => {
     res.json({board: b});
 });
 
-app.get('/new-game/:numPlayers', (req, res) => {
+
+app.get('/new-game', (req, res) => {
+    console.log(req.query)
     let players = [];
-    for (let i = 0; i < req.params.numPlayers; i++) {
-        players.push(new Player());
-    }
-    res.json({players:players});
+    res.json({players: players});
 });
 
 app.post('/game-action/:gameAction', (req, res) => {

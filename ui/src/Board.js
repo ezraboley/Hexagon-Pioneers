@@ -46,13 +46,11 @@ export default function Board(props) {
     }
     
     function buildBoard() {
-        console.log(props.boardState)
         if (props.boardState === undefined) 
             return null;
         let positions = Object.keys(props.boardState);
         let pathStrs = [];
         let newBoard = props.boardState;
-        console.log("here")
         positions.forEach((pos) => {
             let offset = 300;
             let {x,y,z} = props.boardState[pos].pos;
