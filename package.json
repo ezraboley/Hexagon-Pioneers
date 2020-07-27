@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "frontend": "cd ui && npm start",
-    "backend": "cd backend && npm run dev"
+    "backend": "cd backend && npm run dev",
+    "test-backend": "mocha './backend/test/*.js"
   },
   "repository": {
     "type": "git",
@@ -17,5 +18,8 @@
   "bugs": {
     "url": "https://github.com/ezraboley/Hexagon-Pioneers/issues"
   },
-  "homepage": "https://github.com/ezraboley/Hexagon-Pioneers#readme"
+  "homepage": "https://github.com/ezraboley/Hexagon-Pioneers#readme",
+  "devDependencies": {
+    "mocha": "^8.0.1"
+  }
 }
