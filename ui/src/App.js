@@ -69,17 +69,17 @@ function App() {
     return corners;
 }
     // dummy data TODO move to another file
-    const userInfo = {
-        hand: {
-            resourceCards: {
-                sheep: 0,
-                wheat: 1,
-                wood: 1,
-                brick: 1,
-                ore: 2,
-            }
-        }
-    };
+    // const userInfo = {
+    //     hand: {
+    //         resourceCards: {
+    //             sheep: 0,
+    //             wheat: 1,
+    //             wood: 1,
+    //             brick: 1,
+    //             ore: 2,
+    //         }
+    //     }
+    // };
 
   const [snackPack, setSnackPack] = useState([]);
   const [open, setOpen] = useState(false);
@@ -153,7 +153,7 @@ function App() {
 
     return (
    <AppContainer>
-      <Dashboard activeCorner={activeCorner} boardState={board} userInfo={userInfo} handleNewSnack={handleNewSnack}/>
+      <Dashboard sendPostToServer={sendPostToServer} activeCorner={activeCorner} boardState={board} userInfo={userInfo} handleNewSnack={handleNewSnack}/>
       {boardSize === 0 ? 
         null : 
         <Board userInfo={userInfo} activeCorner={activeCorner} size={boardSize} 
