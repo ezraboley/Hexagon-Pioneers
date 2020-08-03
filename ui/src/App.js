@@ -15,7 +15,9 @@ const useStyles = makeStyles((theme) => ({
 
 function App() {    
 
-  function finalizeCorner(activeCorner) {
+  const possibleActions = ["Build Town, Build Road, End Turn"]
+
+  function finalizeCorner(board, activeCorner) {
     const pointIsEqual = (p1, p2) => {
       let x1 = p1.x;
       let x2 = p2.x;
@@ -39,7 +41,7 @@ function App() {
         x: parseInt(vals[0]), 
         y: parseInt(vals[1]), 
         z: parseInt(vals[2])
-    };//this.state.activeCorner.key;
+    };
     let cornerX = activeCorner.x;
     let cornerY = activeCorner.y;
 
@@ -55,12 +57,11 @@ function App() {
     let corners = [];
     corners.push(new Coordinate(pos.x, pos.y, pos.z));
 
-    // Terrible, I know
     neighbors.forEach((n) => {
-        if (this.state.board[n] === undefined) return;
-        for (let p of this.state.board[n].points) {
+        if (board[n] === undefined) return;
+        for (let p of board[n].points) {
             // Gotta do some fuzzy matching
-            if (this.pointIsEqual(p, {x: cornerX, y: cornerY})) {
+            if (pointIsEqual(p, {x: cornerX, y: cornerY})) {
                 corners.push(n);
                 break;
             }
@@ -68,18 +69,19 @@ function App() {
     });
     return corners;
 }
+
     // dummy data TODO move to another file
-    // const userInfo = {
-    //     hand: {
-    //         resourceCards: {
-    //             sheep: 0,
-    //             wheat: 1,
-    //             wood: 1,
-    //             brick: 1,
-    //             ore: 2,
-    //         }
-    //     }
-    // };
+    const userInfo = {
+        hand: {
+            resourceCards: {
+                sheep: 0,
+                wheat: 1,
+                wood: 1,
+                brick: 1,
+                ore: 2,
+            }
+        }
+    };
 
   const [snackPack, setSnackPack] = useState([]);
   const [open, setOpen] = useState(false);
@@ -87,7 +89,7 @@ function App() {
   const [board, setBoard] = useState([]);
   const [boardSize, setBoardSize] = useState(0)
   const [activeCorner, setActiveCorner] = useState({x: 0, y:0, fill: "none", key: null})
-  const [userInfo, setUserInfo] = React.useState({userNumber: null});
+
   
   React.useEffect(() => {
     if (snackPack.length && !messageInfo) {
@@ -103,23 +105,23 @@ function App() {
 
 
   React.useEffect(() => {
-    const url = `${config.url}board`;
-    fetch(url, {method: 'GET'}).then(
-        response => response.json()
-    ).then(
-        data=> 
-        {
-          console.log(data)
-            setBoard(data.board.tiles)
-            setBoardSize(data.board.size)
-        }
-    ).catch(error=> {
-        console.error(error);
-    });
+    const getBoard = async () => {
+      const url = `${config.url}board`;
+      try {
+        let res = await fetch(url)
+        let data = await res.json()
+        console.log(data)
+        setBoard(data.board.tiles)
+        setBoardSize(data.board.size)
+      } catch (e) {
+        console.error(e)
+      }
+    }
+    getBoard()
   }, [])
 
+
   const handleNewSnack = (message) => () => {
-    console.log("snack handled");
     setSnackPack((prev) => [...prev, { message, key: message }]);
   };
 
@@ -134,9 +136,19 @@ function App() {
     setMessageInfo(undefined);
   };
 
-  const sendPostToServer = (url) => {
+  const handlePress = (button) => () => {
+    console.log('button handled' + button);
+    
+    const btnStr = button.trim().replace(/\s+/g, '-').toLowerCase()
+    const url = `${config.url}game-action/${btnStr}`
+    const packet = {board: board, corner: finalizeCorner(board, activeCorner)};
+    console.log(packet)
     fetch(url, {
-      method: 'POST',
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(packet)
     })
     .then(data => data.json())
     .then(data => {
@@ -148,37 +160,14 @@ function App() {
     });
   }
 
-  const handleActionPress = (button) => () => {
-    console.log('button handled' + button);
-    var url = 'http://localhost:8000/';
-    switch (button) {
-      case 'Build Settlement':
-        url = url.concat('game-action/build-settlement');
-        break;  
-      case 'Build Road':
-        url = url.concat('game-action/build-road');
-        break;
-      case 'End Turn':
-        url = url.concat('game-action/end-game');
-        break;
-      default:
-        console.error("Cannot completed action " + button);
-        return;
-    }
-    sendPostToServer(url);
-  }
-
-  const possibleActions = ['Build Settlement', 'Build Road', 'End Turn'];
-
-
   const classes = useStyles();
 
     return (
    <AppContainer>
-      <Dashboard possibleActions={possibleActions} handlePress={handleActionPress} sendPostToServer={sendPostToServer} boardState={board} userInfo={userInfo} handleNewSnack={handleNewSnack}/>
+      <Dashboard possibleActions={possibleActions} handlePress={handlePress} boardState={board} userInfo={userInfo} handleNewSnack={handleNewSnack}/>
       {boardSize === 0 ? 
         null : 
-        <Board userInfo={userInfo} activeCorner={activeCorner} size={boardSize} 
+        <Board activeCorner={activeCorner} size={boardSize} 
         boardState={board} setBoardState={setBoard} setActiveCorner={setActiveCorner}/>
       }
       <Snackbar
