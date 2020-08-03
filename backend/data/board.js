@@ -1,6 +1,7 @@
 const {config} = require('../config.js');
 const {Tile} = require( './tile.js');
 const {Resource} = require('./resource.js');
+const {Corner} = require('../data/corner.js');
 
 const strToCoord = (str) => {
     const vals = str.split(',');
@@ -39,11 +40,16 @@ class Board {
     constructor() {
         this.constructBoard(config.BOARD_SIZE);
     }
+
     constructBoard(size) {
         this.tiles = {};
         this.size = size;
+        this.occupiedCorners = {};
+        this.generateBoard(this.size);
+    }
 
-        let testColors = [
+    generateBoard(size) {
+        const testColors = [
             config.WOOL, config.ORE,
             config.BRICK, config.WOOD,
             config.WHEAT
@@ -62,6 +68,19 @@ class Board {
                 }
             }
         }
+    }
+
+    placeSettlement(location, playerID) {
+        this.placeOnCorner(...arguments, 'settlement');
+    }
+
+    placeCity(location, playerID) {
+        this.placeOnCorner(...arguments, 'city');
+    }
+
+    placeOnCorner(location, playerID, type) {
+        const corner = new Corner(location, playerID, 'city')
+        this.occupiedCorners[corner] = corner;
     }
 }
 
