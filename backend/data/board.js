@@ -1,7 +1,8 @@
 const {config} = require('../config.js');
 const {Tile} = require( './tile.js');
 const {Resource} = require('./resource.js');
-const {Corner} = require('../data/corner.js');
+const {Corner} = require('./corner.js');
+const {Edge} = require('./edge.js');
 
 const strToCoord = (str) => {
     const vals = str.split(',');
@@ -45,6 +46,7 @@ class Board {
         this.tiles = {};
         this.size = size;
         this.occupiedCorners = {};
+        this.roads = {};
         this.generateBoard(this.size);
     }
 
@@ -78,8 +80,13 @@ class Board {
         this.placeOnCorner(...arguments, 'city');
     }
 
+    placeRoad(location, playerID) {
+        const road = new Edge(...arguments);
+        this.roads[road] = road;
+    }
+
     placeOnCorner(location, playerID, type) {
-        const corner = new Corner(location, playerID, 'city')
+        const corner = new Corner(...arguments);
         this.occupiedCorners[corner] = corner;
     }
 }

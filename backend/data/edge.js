@@ -1,11 +1,9 @@
 const {locationListToString} = require('../utils.js');
-// this represents a corner with
-// either a city or settlement
-class Corner {
-	constructor(location, playerID, type) {
+
+class Edge {
+	constructor(location, playerID) {
 		this.location = location;
 		this.playerID = playerID;
-		this.type = type;
 	}
 
 	toString() {
@@ -13,4 +11,4 @@ class Corner {
 	}
 }
 
-module.exports.Corner = Corner;
+module.exports.Edge = Edge;

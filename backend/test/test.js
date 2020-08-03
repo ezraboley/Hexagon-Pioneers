@@ -1,9 +1,11 @@
 const assert = require('assert');
 const {config} = require('../config.js');
+const {locationListToString} = require('../utils.js');
 
 const actions = require('../actions.js');
-const { Board } = require('../data/board.js')
-const { Corner } = require('../data/corner.js')
+const { Board } = require('../data/board.js');
+const { Corner } = require('../data/corner.js');
+const { Edge } = require('../data/edge.js');
 const { Game } = require('../data');
 
 // var gameInstance;
@@ -32,7 +34,7 @@ describe('Board', function () {
   describe('object placement action', function () {
     describe('corner list to string', function () {
       it("should change ['0,-1,1', '-1,0,1', '-1,-1,2'] into '-1,-1,2;-1,0,1;0,-1,1'", function() {
-        const result = Corner.listToString(['0,-1,1', '-1,0,1', '-1,-1,2']);
+        const result = locationListToString(['0,-1,1', '-1,0,1', '-1,-1,2']);
         assert.equal(result, '-1,-1,2;-1,0,1;0,-1,1');
       });
     });
@@ -40,14 +42,20 @@ describe('Board', function () {
       it('should have a settlement at corner 0,-1,1; -1,0,1; -1,-1,2', function () {
         const playerId = 1;
         board.placeSettlement(['0,-1,1', '-1,0,1', '-1,-1,2'], playerId);
-        assert(Corner.listToString(['0,-1,1', '-1,0,1', '-1,-1,2']) in board.occupiedCorners);
+        assert(locationListToString(['0,-1,1', '-1,0,1', '-1,-1,2']) in board.occupiedCorners);
       });
     });
     describe('city placement', function () {
       it('should have a city at corner 0,-2,2; -1,2,-1; 2,-2,0', function () {
         const playerId = 2;
         board.placeCity(['0,-2,2', '-1,2,-1', '2,-2,0'], playerId);
-        assert(Corner.listToString(['0,-2,2', '2,-2,0', '-1,2,-1']) in board.occupiedCorners);
+        assert(locationListToString(['0,-2,2', '2,-2,0', '-1,2,-1']) in board.occupiedCorners);
+      });
+    });
+    describe('road placement', function () {
+      it('should have a road at -1,1,0; 0,0,0', function () {
+        const playerId = 3;
+        board.placeRoad(['-1,1,0', '0,0,0'], playerId);
       });
     });
   });
