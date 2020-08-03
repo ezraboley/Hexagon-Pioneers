@@ -1,18 +1,37 @@
-var assert = require('assert');
+const assert = require('assert');
+const {config} = require('../config.js');
 
-describe('Array', function () {
-  describe('#indexOf()', function () {
-    it('should return -1 when the value is not present', function () {
-      assert.equal([1, 2, 3].indexOf(4), -1);
+const actions = require('../actions.js');
+const { Game } = require('../data');
+
+// var gameInstance;
+let game;
+
+function setup() {
+  game = new Game();
+}
+
+before(async () => {  
+  await setup();
+})
+
+describe('Game', function () {
+  describe ('constructor', function () {
+    it('should create a board of default size', function () {
+      assert.equal(game.board.size,config.BOARD_SIZE); 
     });
+    // it('should create a board with tiles', function () {
+    //   game.board.
+    // });
   });
 });
-
-var actions = require('../actions.js');
-describe('Actions', function () {
-  describe('#hello()', function () {
-    it('should return hello', function () {
-      assert.equal(actions.hello(), "Hello");
-    });
-  });
-});
+// describe('Actions', function () {
+//   // describe('#validateNewSettlement()', function () {
+//   //   it('should ')
+//   // });
+//   describe('hello', function () {
+//     it('should return hello', function () {
+//       assert.equal("Hello", "Hello");
+//     });
+//   });
+// });

@@ -1,3 +1,3 @@
-exports.hello = function hello() {
-  return "Hello";
+exports.buildSettlement = function () {
+	return null;
 }

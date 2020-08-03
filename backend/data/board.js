@@ -1,4 +1,4 @@
-const {config} = require('./config.js');
+const {config} = require('../config.js');
 const {Tile} = require( './tile.js');
 const {Resource} = require('./resource.js');
 
@@ -36,7 +36,10 @@ class Coordinate {
 
 // Singleton
 class Board {
-    constructor(size) {
+    constructor() {
+        this.constructBoard(config.BOARD_SIZE);
+    }
+    constructBoard(size) {
         this.tiles = {};
         this.size = size;
 
