@@ -11,6 +11,10 @@ const games = {};
 
 app.use(cors());
 
+// THIS DEFINES THE API, UNVALIDATED REQUESTS ARE SEND TO GAME.JS AND
+// THIS ALSO WATCHES FOR ERRORS, RETURNING EITHER ERROR MESSAGE
+// OR SUCCESS WITH ANY REQUESTED OBJECTS
+
 app.get('/', (req, res) => {
     res.send('Go to /new-game/:numPlayer for the game!');
 });
@@ -32,17 +36,17 @@ app.get('/board', (req, res) => {
 app.post('/game-action/:gameAction', (req, res) => {
     // This is where you do stuff
     switch (req.params.gameAction) {
-    	case "build-settlement":
-    		res.json({notification: "Settlement Built"});
-    		break;
-    	case "build-road":
-    		res.json({notification: "Road Built"});
-    		break;
-    	case "end-turn":
-    		res.json({notification: "Turn ended"});
-    		break;
-    	default:
-    		res.json({notification: "Action not recognized"});
+        case "build-settlement":
+            res.json({notification: "Settlement Built"});
+            break;
+        case "build-road":
+            res.json({notification: "Road Built"});
+            break;
+        case "end-turn":
+            res.json({notification: "Turn ended"});
+            break;
+        default:
+            res.json({notification: "Action not recognized"});
     }
 });
 

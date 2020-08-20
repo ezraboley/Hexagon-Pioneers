@@ -30,6 +30,8 @@ class Game {
 	// init()
 	// getBoard()
 	// getPlayer(id) // validation?
+
+	// ADD VALIDATION CLASS
 	toString() {
 		return this.numPlayers;
 	}
