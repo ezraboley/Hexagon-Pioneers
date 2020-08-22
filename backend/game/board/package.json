@@ -1,0 +1,2 @@
+{ "name" : "board",
+  "main" : "./board.js" }

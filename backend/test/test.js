@@ -3,12 +3,12 @@ const {config} = require('../config.js');
 const {locationListToString} = require('../utils.js');
 
 const actions = require('../actions.js');
-const { Board } = require('../game/internalComponents/board.js');
-const { Corner } = require('../game/internalComponents/corner.js');
-const { Edge } = require('../game/internalComponents/edge.js');
+const { Board } = require('../game/board');
+const { Player } = require('../game/player');
+const { Corner } = require('../game/board/corner.js');
+const { Edge } = require('../game/board/edge.js');
 const { Game } = require('../game');
 
-// var gameInstance;
 const corner1 = [{x: 0, y: -1, z: 1},
                 {x: -1, y: 0, z: 1},
                 {x: -1, y: -1, z: 2}];
@@ -79,13 +79,28 @@ describe('Board', function () {
     });
   });
 });
+
+describe('Player', function () {
+  describe("#constructor()", function () {
+    it(`should create a player with an id of 1, and 0 of each resource`, function () {
+      const player = new Player(1);
+      assert.equal(player.id, 1);
+      assert.equal(player.resources.ore, 0);
+      assert.equal(player.resources.wood, 0);
+      assert.equal(player.resources.brick, 0);
+      assert.equal(player.resources.wheat, 0);
+      assert.equal(player.resources.wool, 0);
+    })
+  });
+});
+
 describe('Game', function () {
   describe ('#constructor()', function () {
     it('should create a game named VALID with 3 players', function () {
       const validGame = new Game("VALID", 3);
 
       assert.equal(validGame.gameName, "VALID");
-      assert.equal(validGame.numPlayers, 3);
+      assert.equal(Object.keys(validGame.players).length, 3);
     });
     it('should throw an exeption with non-string input', function () {
       assert.throws(() => {
@@ -104,13 +119,12 @@ describe('Game', function () {
     });
   });
   describe ("#tryBuildSettlement()", function () {
-    // need to see player hand first
-    // it('should add a settlement to the game at 0,-1,1; -1,0,1; -1,-1,2', function () {
-    //   const validGame = new Game("VALID", 3);
-    //   const playerId = 1;
-    //   validGame.tryBuildSettlement(corner1, playerId);
-    //   assert(locationListToString(corner1) in validGame.getOccupiedCorners());
-    // });
+    it('should add a settlement to the game at 0,-1,1; -1,0,1; -1,-1,2', function () {
+      const validGame = new Game("VALID", 3);
+      const playerId = 1;
+      validGame.tryBuildSettlement(corner1, playerId);
+      assert(locationListToString(corner1) in validGame.getOccupiedCorners());
+    });
     it('should throw an error when the settlement is placed at 0,-1,1; -1,0,1; -1,-1,1', function () {
       const validGame = new Game("VALID", 3);
       const playerId = 1;
@@ -127,24 +141,3 @@ describe('Game', function () {
     });
   });
 });
-//     it('should create a board of default size', function () {
-//       assert.equal(game.board.size,config.BOARD_SIZE); 
-//     });
-//     it('should have a tile at 1,-2,1', function () {
-//       assert('1,-2,1' in game.board.tiles);
-//     });
-//     it('should not have a tile at 0,-2,3', function () {
-//       assert(!('0,-2,3' in game.board.tiles));
-//     });
-//   });
-// });
-// describe('Actions', function () {
-//   // describe('#validateNewSettlement()', function () {
-//   //   it('should ')
-//   // });
-//   describe('hello', function () {
-//     it('should return hello', function () {
-//       assert.equal("Hello", "Hello");
-//     });
-//   });
-// });

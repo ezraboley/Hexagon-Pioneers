@@ -1,14 +1,21 @@
-const {Board} = require('./internalComponents/board.js');
+const {Board} = require('./board');
+const {Player} = require('./player');
 const {config}  = require('../config.js');
-const {Validate} = require('./validate.js');
+const {GameRules} = require('./gameRules.js');
+
 // entry point for game, should include validation
 class Game {
 	constructor(gameName, numPlayers) {
-		Validate.gameName(gameName);
-		Validate.numPlayers(numPlayers);
+		GameRules.gameName(gameName);
+		GameRules.numPlayers(numPlayers);
 
 		this.gameName = gameName;
-		this.numPlayers = numPlayers;
+		const players = {};
+		let i;
+		for (i = 1; i <= numPlayers; i++) {
+			players[i] = new Player(i);
+		}
+		this.players = players;
 		this.board = new Board();
 	}
 
@@ -16,8 +23,12 @@ class Game {
 		return this.board.getOccupiedCorners();
 	}
 
+	getNumPlayers = () => {
+		return Object.keys(this.players).length;
+	}
+
 	tryBuildSettlement(loc, playerID) {
-		Validate.buildSettlement(this, ...arguments);
+		GameRules.buildSettlement(this, ...arguments);
 
 		this.board.placeSettlement(...arguments);
 	}
@@ -27,14 +38,8 @@ class Game {
 	// players
 		// static id
 		// dynamic resource c, dev c, v points
-
-	// init()
-	// getBoard()
-	// getPlayer(id) // validation?
-
-	// ADD VALIDATION CLASS
 	toString() {
-		return this.numPlayers;
+		return this.gameName;
 	}
 }
 

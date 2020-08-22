@@ -1,5 +1,5 @@
-// returns the arguments or throws an error
-class Validate {
+// Game rules
+class GameRules {
 	static gameName (name) {
 	if (typeof name !== 'string')
 		throw new Error("Game name must be a string");
@@ -11,21 +11,21 @@ class Validate {
   }
 
   static buildSettlement (game, loc, playerID) {
-    testPlayerID(game.numPlayers, playerID);
+    testPlayerID(game.getNumPlayers(), playerID);
     testLogicalCorner(loc, game.board.size);
     //testCornerAvailable(loc, game.board.size);
-    //testPlayerCanCompleteAction(game.)
+    //testPlayerCanCompleteAction(game);
   }
 }
 
 function testPlayerID (numPlayers, id) {
   if (!(1 <= id && id <= numPlayers))
-    throw new Error("Player id must be between 1 and ${numPlayers}");
+    throw new Error(`Player id must be between 1 and ${numPlayers}`);
 }
 
 function testLogicalCorner (loc, boardSize) {
   loc.forEach(tile => {
-    this.testTile(tile, boardSize);
+    testTile(tile, boardSize);
   });
 }
 
@@ -40,4 +40,4 @@ function testTile (tile, boardSize) {
 
 //function testCornerAvailable ()
 
-module.exports.Validate = Validate;
+module.exports.GameRules = GameRules;
