@@ -1,24 +1,25 @@
-const {Board} = require('./board.js');
+const {Board} = require('./internalComponents/board.js');
 const {config}  = require('../config.js');
+const {Validate} = require('./validate.js');
 // entry point for game, should include validation
 class Game {
 	constructor(gameName, numPlayers) {
-		this.gameName = this.validateGameName(gameName);
-		this.numPlayers = this.validateNumPlayers(numPlayers);
+		Validate.gameName(gameName);
+		Validate.numPlayers(numPlayers);
+
+		this.gameName = gameName;
+		this.numPlayers = numPlayers;
 		this.board = new Board();
 	}
 
-	validateGameName = (name) => {
-		if (typeof name !== 'string')
-			throw new Error("Game name must be a string");
-		return name;
+	getOccupiedCorners = () => {
+		return this.board.getOccupiedCorners();
 	}
 
-	validateNumPlayers = (num) => {
-		if (2 <= num && num <= 4)
-			return num;
-		else
-			throw new Error("Number of players must  be between 2 and 4");
+	tryBuildSettlement(loc, playerID) {
+		Validate.buildSettlement(this, ...arguments);
+
+		this.board.placeSettlement(...arguments);
 	}
 	// var board;
 		// static tiles

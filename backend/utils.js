@@ -1,3 +1,7 @@
 exports.locationListToString = (list) => {
-	return [...list].sort().join(';');
+	const strList = [];
+	list.forEach(loc => {
+      strList.push(`${loc.x},${loc.y},${loc.z}`);
+    });
+	return [...strList].sort().join(';');
 }

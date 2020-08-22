@@ -1,2 +1,1 @@
-{ "name" : "data",
-  "main" : "./game.js" }
+{ "name" : "internalComponents" }

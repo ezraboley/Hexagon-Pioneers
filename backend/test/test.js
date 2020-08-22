@@ -3,12 +3,28 @@ const {config} = require('../config.js');
 const {locationListToString} = require('../utils.js');
 
 const actions = require('../actions.js');
-const { Board } = require('../data/board.js');
-const { Corner } = require('../data/corner.js');
-const { Edge } = require('../data/edge.js');
-const { Game } = require('../data');
+const { Board } = require('../game/internalComponents/board.js');
+const { Corner } = require('../game/internalComponents/corner.js');
+const { Edge } = require('../game/internalComponents/edge.js');
+const { Game } = require('../game');
 
 // var gameInstance;
+const corner1 = [{x: 0, y: -1, z: 1},
+                {x: -1, y: 0, z: 1},
+                {x: -1, y: -1, z: 2}];
+const corner2 = [{x: 0, y: -2, z: 2},
+                {x: -1, y: 2, z: -1},
+                {x: 2, y: -2, z: 0}];
+const invaildCorner1 = [{x: 0, y: -1, z: 1},
+                        {x: -1, y: 0, z: 1},
+                        {x: -1, y: -1, z: 1}];
+
+const invaildCorner2 = [{x: 0, y: -1, z: 1},
+                        {x: -1, y: 0, z: 1},
+                        {x: -1, y: -1, z: 3}];
+const edge1 = [{x: -1, y: 1, z: 0,
+                x: 0, y: 0, z: 0}];
+
 let board;
 let game;
 
@@ -35,29 +51,30 @@ describe('Board', function () {
   });
   describe('object placement action', function () {
     describe('#locationListToString()', function () {
-      it("should change ['0,-1,1', '-1,0,1', '-1,-1,2'] into '-1,-1,2;-1,0,1;0,-1,1'", function() {
-        const result = locationListToString(['0,-1,1', '-1,0,1', '-1,-1,2']);
+      it(`should change ${corner1} into '-1,-1,2;-1,0,1;0,-1,1'`, function() {
+        const result = locationListToString(corner1);
         assert.equal(result, '-1,-1,2;-1,0,1;0,-1,1');
       });
     });
     describe('#placeSettlement()', function () {
       it('should have a settlement at corner 0,-1,1; -1,0,1; -1,-1,2', function () {
         const playerId = 1;
-        board.placeSettlement(['0,-1,1', '-1,0,1', '-1,-1,2'], playerId);
-        assert(locationListToString(['0,-1,1', '-1,0,1', '-1,-1,2']) in board.occupiedCorners);
+        board.placeSettlement(corner1, playerId);
+        assert(locationListToString(corner1) in board.occupiedCorners);
       });
     });
     describe('#placeCity()', function () {
       it('should have a city at corner 0,-2,2; -1,2,-1; 2,-2,0', function () {
         const playerId = 2;
-        board.placeCity(['0,-2,2', '-1,2,-1', '2,-2,0'], playerId);
-        assert(locationListToString(['0,-2,2', '2,-2,0', '-1,2,-1']) in board.occupiedCorners);
+        board.placeCity(corner2, playerId);
+        assert(locationListToString(corner2) in board.occupiedCorners);
       });
     });
     describe('#placeRoad()', function () {
       it('should have a road at -1,1,0; 0,0,0', function () {
         const playerId = 3;
-        board.placeRoad(['-1,1,0', '0,0,0'], playerId);
+        board.placeRoad(edge1, playerId);
+        assert(locationListToString(edge1) in board.roads);
       });
     });
   });
@@ -86,8 +103,28 @@ describe('Game', function () {
       });
     });
   });
-  describe ("#playerAction()", function () {
-
+  describe ("#tryBuildSettlement()", function () {
+    // need to see player hand first
+    // it('should add a settlement to the game at 0,-1,1; -1,0,1; -1,-1,2', function () {
+    //   const validGame = new Game("VALID", 3);
+    //   const playerId = 1;
+    //   validGame.tryBuildSettlement(corner1, playerId);
+    //   assert(locationListToString(corner1) in validGame.getOccupiedCorners());
+    // });
+    it('should throw an error when the settlement is placed at 0,-1,1; -1,0,1; -1,-1,1', function () {
+      const validGame = new Game("VALID", 3);
+      const playerId = 1;
+      assert.throws(() => {
+        validGame.tryBuildSettlement(invaildCorner1, playerId);
+      });
+    });
+    it('should throw an error when the settlement is placed at 0,-1,1; -1,0,1; -1,-1,3', function () {
+      const validGame = new Game("VALID", 3);
+      const playerId = 1;
+      assert.throws(() => {
+        validGame.tryBuildSettlement(invaildCorner2, playerId);
+      });
+    });
   });
 });
 //     it('should create a board of default size', function () {

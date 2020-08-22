@@ -1,4 +1,4 @@
-const {locationListToString} = require('../utils.js');
+const {locationListToString} = require('../../utils.js');
 
 class Edge {
 	constructor(location, playerID) {

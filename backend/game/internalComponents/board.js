@@ -1,4 +1,4 @@
-const {config} = require('../config.js');
+const {config} = require('../../config.js');
 const {Tile} = require( './tile.js');
 const {Resource} = require('./resource.js');
 const {Corner} = require('./corner.js');
@@ -48,6 +48,10 @@ class Board {
         this.occupiedCorners = {};
         this.roads = {};
         this.generateBoard(this.size);
+    }
+
+    getOccupiedCorners = () => {
+        return this.occupiedCorners;
     }
 
     generateBoard(size) {

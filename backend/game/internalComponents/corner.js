@@ -1,4 +1,4 @@
-const {locationListToString} = require('../utils.js');
+const {locationListToString} = require('../../utils.js');
 // this represents a corner with
 // either a city or settlement
 class Corner {
