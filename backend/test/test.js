@@ -22,6 +22,11 @@ const invaildCorner1 = [{x: 0, y: -1, z: 1},
 const invaildCorner2 = [{x: 0, y: -1, z: 1},
                         {x: -1, y: 0, z: 1},
                         {x: -1, y: -1, z: 3}];
+
+const invaildCorner3 = [{x: 0, y: -1, z: 1},
+                        {x: -1, y: 0, z: 1},
+                        {x: 2, y: -2, z: 0}];
+
 const edge1 = [{x: -1, y: 1, z: 0,
                 x: 0, y: 0, z: 0}];
 
@@ -40,13 +45,28 @@ before(async () => {
 describe('Board', function () {
   describe ('#constructor()', function () {
     it('should create a board of default size', function () {
-      assert.equal(board.size,config.BOARD_SIZE); 
+      assert.equal(board._size,config.BOARD_SIZE); 
     });
     it('should have a tile at 1,-2,1', function () {
-      assert('1,-2,1' in board.tiles);
+      assert('1,-2,1' in board._tiles);
     });
     it('should not have a tile at 0,-2,3', function () {
-      assert(!('0,-2,3' in board.tiles));
+      assert(!('0,-2,3' in board._tiles));
+    });
+  });
+  describe('#getBoardState()', function () {
+    it('should return a copy of the size', function () {
+      const validGame = new Game("VALID", 3);
+      const boardState = game.getBoardState();
+      boardState.size = 6;
+      assert.equal(boardState.size, 6);
+      assert.equal(validGame.board._size, 2);
+    });
+    it('should return a copy of the tiles', function () {
+      const validGame = new Game("VALID", 3);
+      const boardState = game.getBoardState();
+      boardState.tiles['0,0,0'].pos = null;
+      assert.notEqual(boardState.tiles['0,0,0'].pos, validGame.board._tiles['0,0,0'].pos);
     });
   });
   describe('object placement action', function () {
@@ -60,21 +80,21 @@ describe('Board', function () {
       it('should have a settlement at corner 0,-1,1; -1,0,1; -1,-1,2', function () {
         const playerId = 1;
         board.placeSettlement(corner1, playerId);
-        assert(locationListToString(corner1) in board.occupiedCorners);
+        assert(locationListToString(corner1) in board._occupiedCorners);
       });
     });
     describe('#placeCity()', function () {
       it('should have a city at corner 0,-2,2; -1,2,-1; 2,-2,0', function () {
         const playerId = 2;
         board.placeCity(corner2, playerId);
-        assert(locationListToString(corner2) in board.occupiedCorners);
+        assert(locationListToString(corner2) in board._occupiedCorners);
       });
     });
     describe('#placeRoad()', function () {
       it('should have a road at -1,1,0; 0,0,0', function () {
         const playerId = 3;
         board.placeRoad(edge1, playerId);
-        assert(locationListToString(edge1) in board.roads);
+        assert(locationListToString(edge1) in board._roads);
       });
     });
   });
@@ -123,7 +143,7 @@ describe('Game', function () {
       const validGame = new Game("VALID", 3);
       const playerId = 1;
       validGame.tryBuildSettlement(corner1, playerId);
-      assert(locationListToString(corner1) in validGame.getOccupiedCorners());
+      assert(locationListToString(corner1) in validGame.getBoardState().occupiedCorners);
     });
     it('should throw an error when the settlement is placed at 0,-1,1; -1,0,1; -1,-1,1', function () {
       const validGame = new Game("VALID", 3);
@@ -139,5 +159,22 @@ describe('Game', function () {
         validGame.tryBuildSettlement(invaildCorner2, playerId);
       });
     });
+    it('should throw an error when placing a settlement on a occupied corner', function () {
+      const validGame = new Game("VALID", 3);
+      const playerId = 1;
+      validGame.tryBuildSettlement(corner1, playerId);
+
+      assert.throws(() => {
+        validGame.tryBuildSettlement(corner1, playerId);
+      });
+    })
+    it('should throw an error when placing a settlement on non neighboring tiles', function () {
+      const validGame = new Game("VALID", 3);
+      const playerId = 1;
+
+      assert.throws(() => {
+        validGame.tryBuildSettlement(invaildCorner3, playerId);
+      });
+    })
   });
 });

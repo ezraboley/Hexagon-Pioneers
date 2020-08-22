@@ -1,4 +1,5 @@
-// Game rules
+const {locationListToString} = require('../utils.js');
+
 class GameRules {
 	static gameName (name) {
 	if (typeof name !== 'string')
@@ -12,8 +13,8 @@ class GameRules {
 
   static buildSettlement (game, loc, playerID) {
     testPlayerID(game.getNumPlayers(), playerID);
-    testLogicalCorner(loc, game.board.size);
-    //testCornerAvailable(loc, game.board.size);
+    testLogicalCorner(loc, game.getBoardState().tiles);
+    testCornerAvailable(loc, game.getBoardState().occupiedCorners);
     //testPlayerCanCompleteAction(game);
   }
 }
@@ -23,21 +24,37 @@ function testPlayerID (numPlayers, id) {
     throw new Error(`Player id must be between 1 and ${numPlayers}`);
 }
 
-function testLogicalCorner (loc, boardSize) {
+function testLogicalCorner (loc, tiles) {
+  const neighboringTiles = [];
+  let i = 0;
   loc.forEach(tile => {
-    testTile(tile, boardSize);
+    console.log(tile);
+    console.log(tiles);
+    if (tile in tiles)
+      neighboringTiles[i++] = tiles[tile];
+    else
+      throw new Error("Invalid tile location");
   });
+  // make sure the tiles are neighbors
+  if (!(neighboringTiles[1] in neighboringTiles[0].neighbors &&
+    neighboringTiles[2] in neighboringTiles[1].neighbors &&
+    neighboringTiles[0] in neighboringTiles[2].neighbors))
+    throw new Error("Selected tiles are not neighbors");
 }
 
-function testTile (tile, boardSize) {
-  if (!((tile.x + tile.y + tile.z) == 0))
-    throw new Error("Illogical tile location");
-  Object.values(tile).forEach(val => {
-    if (!(-boardSize < val || val < boardSize))
-      throw new Error("Tile outside board");
-  });
-}
+// function testTile (tile, boardSize) {
+//   if (!((tile.x + tile.y + tile.z) == 0))
+//     throw new Error("Illogical tile location");
+//   Object.values(tile).forEach(val => {
+//     if (!(-boardSize < val || val < boardSize))
+//       throw new Error("Tile outside board");
+//   });
+// }
 
-//function testCornerAvailable ()
+function testCornerAvailable (loc, occupiedCorners) {
+  if (locationListToString(loc) in occupiedCorners) {
+    throw new Error("Corner already occupied");
+  }
+}
 
 module.exports.GameRules = GameRules;

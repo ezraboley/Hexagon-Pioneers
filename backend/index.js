@@ -3,7 +3,6 @@ const express = require('express');
 
 const {Game} = require('./data');
 const {config}  = require('./config.js');
-const {Player} = require('./player.js');
 
 const app = express();
 const port = 8000;

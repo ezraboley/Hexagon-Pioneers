@@ -19,8 +19,8 @@ class Game {
 		this.board = new Board();
 	}
 
-	getOccupiedCorners = () => {
-		return this.board.getOccupiedCorners();
+	getBoardState = () => {
+		return this.board.getBoardState();
 	}
 
 	getNumPlayers = () => {
