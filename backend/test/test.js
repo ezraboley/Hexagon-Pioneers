@@ -7,6 +7,7 @@ const { Board } = require('../game/board');
 const { Player } = require('../game/player');
 const { Corner } = require('../game/board/corner.js');
 const { Edge } = require('../game/board/edge.js');
+const { Coordinate } = require('../game/board/coordinate.js');
 const { Game } = require('../game');
 
 const corner1 = [{x: 0, y: -1, z: 1},

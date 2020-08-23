@@ -3,37 +3,13 @@ const {Tile} = require( './tile.js');
 const {Resource} = require('./resource.js');
 const {Corner} = require('./corner.js');
 const {Edge} = require('./edge.js');
+const {Coordinate} = require('./coordinate.js');
 const {coordinateToString} = require('../../utils.js');
 
 const strToCoord = (str) => {
   const vals = str.split(',');
   return new Coordinate(vals[0], vals[1], vals[2]);
 };
-
-// Data structure for cubic coordinates!
-class Coordinate {
-  constructor(x, y, z) {
-    this.x = x;
-    this.y = y;
-    this.z = z;
-    this.type = "cube";
-  }
-
-  // Implement if needed
-  convertToAxial() {
-    return null;
-  }
-
-  // Implement if needed
-  convertToOffset() {
-    return null;
-  }
-
-  toString() {
-    return coordinateToString(this);
-  }
-
-}
 
 // Find corners by looking at common neighbors
 

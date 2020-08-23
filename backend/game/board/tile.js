@@ -1,5 +1,7 @@
 const {config} = require("../../config.js");
 const {Resource} = require("./resource.js");
+const {Coordinate} = require('./coordinate.js');
+const {coordinateToString} = require('../../utils.js');
 
 class Tile {
     // pos is an object in this case!
@@ -17,15 +19,19 @@ class Tile {
         //  y: int
         //  z: int
         // };
-        this.pos = pos;
+        this.pos = new Coordinate(pos.x, pos.y, pos.z);
         this.neighbors = [
-            {x: this.pos.x + 1, y: this.pos.y - 1, z: this.pos.z},
-            {x: this.pos.x + 1, y: this.pos.y, z: this.pos.z - 1},
-            {x: this.pos.x, y: this.pos.y + 1, z: this.pos.z - 1},
-            {x: this.pos.x - 1, y: this.pos.y + 1, z: this.pos.z},
-            {x: this.pos.x - 1, y: this.pos.y, z: this.pos.z + 1},
-            {x: this.pos.x, y: this.pos.y - 1, z: this.pos.z + 1},
+            new Coordinate(this.pos.x + 1,  this.pos.y - 1, this.pos.z),
+            new Coordinate(this.pos.x + 1,  this.pos.y,     this.pos.z - 1),
+            new Coordinate(this.pos.x,      this.pos.y + 1, this.pos.z - 1),
+            new Coordinate(this.pos.x - 1,  this.pos.y + 1, this.pos.z),
+            new Coordinate(this.pos.x - 1,  this.pos.y,     this.pos.z + 1),
+            new Coordinate(this.pos.x,      this.pos.y - 1, this.pos.z + 1),
         ];
+    }
+
+    toString() {
+        return coordinateToString(this.pos);
     }
 
 }

@@ -1,4 +1,5 @@
-const {locationListToString} = require('../utils.js');
+const {locationListToString, coordinateToString, objectInObjects} = require('../utils.js');
+const {coordEquals} = require('./board/coordinate.js')
 
 class GameRules {
 	static gameName (name) {
@@ -24,22 +25,29 @@ function testPlayerID (numPlayers, id) {
     throw new Error(`Player id must be between 1 and ${numPlayers}`);
 }
 
+// fixme doesnt have to be just a corner
 function testLogicalCorner (loc, tiles) {
   const neighboringTiles = [];
   let i = 0;
   loc.forEach(tile => {
-    console.log(tile);
-    console.log(tiles);
-    if (tile in tiles)
-      neighboringTiles[i++] = tiles[tile];
+    const tileName = coordinateToString(tile);
+    if (tileName in tiles)
+      neighboringTiles[i++] = tiles[tileName];
     else
       throw new Error("Invalid tile location");
   });
+  // console.log(neighboringTiles[1].pos);
+  // console.log(neighboringTiles[0].neighbors);
+  // console.log(neighboringTiles[1].pos in neighboringTiles[0].neighbors);
   // make sure the tiles are neighbors
-  if (!(neighboringTiles[1] in neighboringTiles[0].neighbors &&
-    neighboringTiles[2] in neighboringTiles[1].neighbors &&
-    neighboringTiles[0] in neighboringTiles[2].neighbors))
-    throw new Error("Selected tiles are not neighbors");
+  // no compareTo overloading!! smh. figure out a different way
+  console.log(coordEquals(neighboringTiles[1].pos, neighboringTiles[2].pos));
+  // if (!(
+  //   objectInObjects(neighboringTiles[1].pos, neighboringTiles[0].neighbors) &&
+  //   objectInObjects(neighboringTiles[2].pos, neighboringTiles[1].neighbors) &&
+  //   objectInObjects(neighboringTiles[0].pos, neighboringTiles[2].neighbors)
+  //   ))
+  //   throw new Error("Selected tiles are not neighbors");
 }
 
 // function testTile (tile, boardSize) {
