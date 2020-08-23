@@ -15,7 +15,10 @@ class GameRules {
     testPlayerID(game.getNumPlayers(), playerID);
     testLogicalPosition(loc, game.getBoardState().tiles);
     testCornerAvailable(loc, game.getBoardState().occupiedCorners);
-    //testPlayerCanCompleteAction(game);
+    // testPlayerCanCompleteAction(cost, game.getPlayer(playerID).hand);
+    const hand = game.getPlayerState(playerID).hand;
+    if (hand.wood < 1 && hand.brick < 1 && hand.wheat < 1 && hand.wool < 1)
+      throw new Error ("Player does not have the resources");
   }
 }
 

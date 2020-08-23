@@ -105,13 +105,25 @@ describe('Player', function () {
   describe("#constructor()", function () {
     it(`should create a player with an id of 1, and 0 of each resource`, function () {
       const player = new Player(1);
-      assert.equal(player.id, 1);
-      assert.equal(player.resources.ore, 0);
-      assert.equal(player.resources.wood, 0);
-      assert.equal(player.resources.brick, 0);
-      assert.equal(player.resources.wheat, 0);
-      assert.equal(player.resources.wool, 0);
+      assert.equal(player._id, 1);
+      assert.equal(player._hand.ore, 0);
+      assert.equal(player._hand.wood, 0);
+      assert.equal(player._hand.brick, 0);
+      assert.equal(player._hand.wheat, 0);
+      assert.equal(player._hand.wool, 0);
     })
+  });
+  describe('#takeCard()', function () {
+    it('should pick up an ore when called', function () {
+      const player = new Player(1);
+      player.takeResource(config.ORE, 1);
+      assert.equal(player.getPlayerState().hand[config.ORE], 1);
+    });
+    it('should pick up 2 wools when called', function () {
+      const player = new Player(2);
+      player.takeResource(config.WOOL, 2);
+      assert.equal(player.getPlayerState().hand[config.WOOL], 2);
+    });
   });
 });
 
@@ -143,12 +155,20 @@ describe('Game', function () {
     it('should add a settlement to the game at 0,-1,1; -1,0,1; -1,-1,2', function () {
       const validGame = new Game("VALID", 3);
       const playerId = 1;
+      validGame.players[playerId].takeResource(config.WOOD, 1);
+      validGame.players[playerId].takeResource(config.WHEAT, 1);
+      validGame.players[playerId].takeResource(config.WOOL, 1);
+      validGame.players[playerId].takeResource(config.BRICK, 1);
       validGame.tryBuildSettlement(corner1, playerId);
       assert(locationListToString(corner1) in validGame.getBoardState().occupiedCorners);
     });
     it('should throw an error when the settlement is placed at 0,-1,1; -1,0,1; -1,-1,1', function () {
       const validGame = new Game("VALID", 3);
       const playerId = 1;
+      validGame.players[playerId].takeResource(config.WOOD, 1);
+      validGame.players[playerId].takeResource(config.WHEAT, 1);
+      validGame.players[playerId].takeResource(config.WOOL, 1);
+      validGame.players[playerId].takeResource(config.BRICK, 1);
       assert.throws(() => {
         validGame.tryBuildSettlement(invaildCorner1, playerId);
       });
@@ -156,6 +176,10 @@ describe('Game', function () {
     it('should throw an error when the settlement is placed at 0,-1,1; -1,0,1; -1,-1,3', function () {
       const validGame = new Game("VALID", 3);
       const playerId = 1;
+      validGame.players[playerId].takeResource(config.WOOD, 1);
+      validGame.players[playerId].takeResource(config.WHEAT, 1);
+      validGame.players[playerId].takeResource(config.WOOL, 1);
+      validGame.players[playerId].takeResource(config.BRICK, 1);
       assert.throws(() => {
         validGame.tryBuildSettlement(invaildCorner2, playerId);
       });
@@ -163,6 +187,10 @@ describe('Game', function () {
     it('should throw an error when placing a settlement on a occupied corner', function () {
       const validGame = new Game("VALID", 3);
       const playerId = 1;
+      validGame.players[playerId].takeResource(config.WOOD, 1);
+      validGame.players[playerId].takeResource(config.WHEAT, 1);
+      validGame.players[playerId].takeResource(config.WOOL, 1);
+      validGame.players[playerId].takeResource(config.BRICK, 1);
       validGame.tryBuildSettlement(corner1, playerId);
 
       assert.throws(() => {
@@ -172,6 +200,10 @@ describe('Game', function () {
     it('should throw an error when placing a settlement on non neighboring tiles', function () {
       const validGame = new Game("VALID", 3);
       const playerId = 1;
+      validGame.players[playerId].takeResource(config.WOOD, 1);
+      validGame.players[playerId].takeResource(config.WHEAT, 1);
+      validGame.players[playerId].takeResource(config.WOOL, 1);
+      validGame.players[playerId].takeResource(config.BRICK, 1);
 
       assert.throws(() => {
         validGame.tryBuildSettlement(invaildCorner3, playerId);

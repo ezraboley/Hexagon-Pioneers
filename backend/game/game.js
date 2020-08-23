@@ -1,6 +1,5 @@
 const {Board} = require('./board');
 const {Player} = require('./player');
-const {config}  = require('../config.js');
 const {GameRules} = require('./gameRules.js');
 
 // entry point for game, should include validation
@@ -21,6 +20,10 @@ class Game {
 
 	getBoardState = () => {
 		return this.board.getBoardState();
+	}
+
+	getPlayerState = (playerID) => {
+		return this.players[playerID].getPlayerState();
 	}
 
 	getNumPlayers = () => {
