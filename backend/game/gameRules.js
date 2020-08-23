@@ -1,5 +1,4 @@
 const {locationListToString, coordinateToString, objectInObjects} = require('../utils.js');
-const {coordEquals} = require('./board/coordinate.js')
 
 class GameRules {
 	static gameName (name) {
@@ -14,7 +13,7 @@ class GameRules {
 
   static buildSettlement (game, loc, playerID) {
     testPlayerID(game.getNumPlayers(), playerID);
-    testLogicalCorner(loc, game.getBoardState().tiles);
+    testLogicalPosition(loc, game.getBoardState().tiles);
     testCornerAvailable(loc, game.getBoardState().occupiedCorners);
     //testPlayerCanCompleteAction(game);
   }
@@ -26,7 +25,7 @@ function testPlayerID (numPlayers, id) {
 }
 
 // fixme doesnt have to be just a corner
-function testLogicalCorner (loc, tiles) {
+function testLogicalPosition (loc, tiles) {
   const neighboringTiles = [];
   let i = 0;
   loc.forEach(tile => {
@@ -36,18 +35,19 @@ function testLogicalCorner (loc, tiles) {
     else
       throw new Error("Invalid tile location");
   });
-  // console.log(neighboringTiles[1].pos);
-  // console.log(neighboringTiles[0].neighbors);
-  // console.log(neighboringTiles[1].pos in neighboringTiles[0].neighbors);
-  // make sure the tiles are neighbors
-  // no compareTo overloading!! smh. figure out a different way
-  console.log(coordEquals(neighboringTiles[1].pos, neighboringTiles[2].pos));
-  // if (!(
-  //   objectInObjects(neighboringTiles[1].pos, neighboringTiles[0].neighbors) &&
-  //   objectInObjects(neighboringTiles[2].pos, neighboringTiles[1].neighbors) &&
-  //   objectInObjects(neighboringTiles[0].pos, neighboringTiles[2].neighbors)
-  //   ))
-  //   throw new Error("Selected tiles are not neighbors");
+  for (i=0; i<neighboringTiles.length; i++) {
+    let posString = coordinateToString(neighboringTiles[(i+1)%neighboringTiles.length].pos);
+    if (!posStringInNeighbors(posString, neighboringTiles[i].neighbors))
+      throw new Error("Tiles are not next to each other");
+  }
+}
+
+function posStringInNeighbors(posString, neighbors) {
+  for (i=0;i<neighbors.length;i++) {
+    if (posString === neighbors[i])
+      return true;
+  }
+  return false;
 }
 
 // function testTile (tile, boardSize) {

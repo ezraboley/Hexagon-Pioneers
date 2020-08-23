@@ -21,12 +21,12 @@ class Tile {
         // };
         this.pos = new Coordinate(pos.x, pos.y, pos.z);
         this.neighbors = [
-            new Coordinate(this.pos.x + 1,  this.pos.y - 1, this.pos.z),
-            new Coordinate(this.pos.x + 1,  this.pos.y,     this.pos.z - 1),
-            new Coordinate(this.pos.x,      this.pos.y + 1, this.pos.z - 1),
-            new Coordinate(this.pos.x - 1,  this.pos.y + 1, this.pos.z),
-            new Coordinate(this.pos.x - 1,  this.pos.y,     this.pos.z + 1),
-            new Coordinate(this.pos.x,      this.pos.y - 1, this.pos.z + 1),
+            coordinateToString(new Coordinate(this.pos.x + 1,  this.pos.y - 1, this.pos.z)),
+            coordinateToString(new Coordinate(this.pos.x + 1,  this.pos.y,     this.pos.z - 1)),
+            coordinateToString(new Coordinate(this.pos.x,      this.pos.y + 1, this.pos.z - 1)),
+            coordinateToString(new Coordinate(this.pos.x - 1,  this.pos.y + 1, this.pos.z)),
+            coordinateToString(new Coordinate(this.pos.x - 1,  this.pos.y,     this.pos.z + 1)),
+            coordinateToString(new Coordinate(this.pos.x,      this.pos.y - 1, this.pos.z + 1)),
         ];
     }
 

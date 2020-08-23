@@ -25,13 +25,4 @@ class Coordinate {
 
 }
 
-function equals(t, other) {
-  if (t.x == other.x &&
-      t.y == other.y &&
-      t.z == other.z)
-    return true;
-  return false;
-}
-
 module.exports.Coordinate = Coordinate;
-module.exports.coordEquals = equals;
