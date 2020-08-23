@@ -1,4 +1,5 @@
 const {locationListToString, coordinateToString, objectInObjects} = require('../utils.js');
+const {config} = require('../config.js');
 
 class GameRules {
 	static gameName (name) {
@@ -14,11 +15,15 @@ class GameRules {
   static buildSettlement (game, loc, playerID) {
     testPlayerID(game.getNumPlayers(), playerID);
     testLogicalPosition(loc, game.getBoardState().tiles);
-    testCornerAvailable(loc, game.getBoardState().occupiedCorners);
-    // testPlayerCanCompleteAction(cost, game.getPlayer(playerID).hand);
-    const hand = game.getPlayerState(playerID).hand;
-    if (hand.wood < 1 && hand.brick < 1 && hand.wheat < 1 && hand.wool < 1)
-      throw new Error ("Player does not have the resources");
+    testSpaceAvailable(loc, game.getBoardState().occupiedCorners);
+    testPlayerCanCompletePurchase(config.PRICES.SETTLEMENT, game.getPlayerState(playerID).hand);
+  }
+
+  static buildRoad (game, loc, playerID) {
+    testPlayerID(game.getNumPlayers(), playerID);
+    testLogicalPosition(loc, game.getBoardState().tiles);
+    testSpaceAvailable(loc, game.getBoardState().roads);
+    testPlayerCanCompletePurchase(config.PRICES.ROAD, game.getPlayerState(playerID).hand);
   }
 }
 
@@ -52,10 +57,19 @@ function posStringInNeighbors(posString, neighbors) {
   return false;
 }
 
-function testCornerAvailable (loc, occupiedCorners) {
-  if (locationListToString(loc) in occupiedCorners) {
-    throw new Error("Corner already occupied");
+function testSpaceAvailable (loc, occupied) {
+  if (locationListToString(loc) in occupied) {
+    throw new Error("Space already occupied");
   }
+}
+
+function testPlayerCanCompletePurchase(cost, hand) {
+  if (  !(hand[config.ORE] >= cost[config.ORE] &&
+          hand[config.WOOD] >= cost[config.WOOD] &&
+          hand[config.BRICK] >= cost[config.BRICK] &&
+          hand[config.WHEAT] >= cost[config.WHEAT] &&
+          hand[config.WOOL] >= cost[config.WOOL])  )
+    throw new Error("Player does not have the resources to complete purchase");
 }
 
 module.exports.GameRules = GameRules;

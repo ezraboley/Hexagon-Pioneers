@@ -22,7 +22,6 @@ app.post('/new-game', (req, res) => {
     console.log(req.query)
     const newGame = new Game(req.query.name, req.query.numPlayers);
     games[newGame] = newGame;
-    //let players = [];
     // res.json({notification: "Game Created"});
     // res.json({players: players});
 });
@@ -42,11 +41,11 @@ app.post('/game-action/:gameAction', (req, res) => {
             res.json({notification: "Road Built"});
             break;
         case "end-turn":
-            res.json({notification: "Turn ended"});
+            res.json({notification: "Turn ended not implemented"});
             break;
         default:
             res.json({notification: "Action not recognized"});
     }
 });
 
-app.listen(port, () => console.log(`Example app listening at http://localhost:${port}`))
+app.listen(port, () => console.log(`Listening at http://localhost:${port}`))

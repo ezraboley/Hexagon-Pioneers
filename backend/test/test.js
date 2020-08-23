@@ -16,6 +16,10 @@ const corner1 = [{x: 0, y: -1, z: 1},
 const corner2 = [{x: 0, y: -2, z: 2},
                 {x: -1, y: 2, z: -1},
                 {x: 2, y: -2, z: 0}];
+
+const boarder1 = [{x: 0, y: -1, z: 1},
+                {x: -1, y: 0, z: 1}];
+
 const invaildCorner1 = [{x: 0, y: -1, z: 1},
                         {x: -1, y: 0, z: 1},
                         {x: -1, y: -1, z: 1}];
@@ -215,6 +219,26 @@ describe('Game', function () {
 
       assert.throws(() => {
         validGame.tryBuildSettlement(corner1, playerId);
+      });
+    });
+  });
+  describe ("#tryBuildRoad()", function () {
+    it('should build a road at a valid boarder', function () {
+      const validGame = new Game("VALID", 4);
+
+      const playerId = 1;
+      validGame.players[playerId].takeResource(config.WOOD, 1);
+      validGame.players[playerId].takeResource(config.BRICK, 1);
+
+      validGame.tryBuildRoad(boarder1, playerId);
+      assert(locationListToString(boarder1) in validGame.getBoardState().roads);
+    });
+    it('should throw an error when the player doesnt have the correct resources', function () {
+      const validGame = new Game("VALID", 3);
+      const playerId = 1;
+
+      assert.throws(() => {
+        validGame.tryBuildRoad(boarder1, playerId);
       });
     });
   });

@@ -35,6 +35,12 @@ class Game {
 
 		this.board.placeSettlement(...arguments);
 	}
+
+	tryBuildRoad(loc, playerID) {
+		GameRules.buildRoad(this, ...arguments);
+
+		this.board.placeRoad(...arguments);
+	}
 	// var board;
 		// static tiles
 		// dynamic settlements, roads, cities, robber, l army, l road, cards played, last roll
