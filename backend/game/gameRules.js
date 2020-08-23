@@ -24,7 +24,6 @@ function testPlayerID (numPlayers, id) {
     throw new Error(`Player id must be between 1 and ${numPlayers}`);
 }
 
-// fixme doesnt have to be just a corner
 function testLogicalPosition (loc, tiles) {
   const neighboringTiles = [];
   let i = 0;
@@ -49,15 +48,6 @@ function posStringInNeighbors(posString, neighbors) {
   }
   return false;
 }
-
-// function testTile (tile, boardSize) {
-//   if (!((tile.x + tile.y + tile.z) == 0))
-//     throw new Error("Illogical tile location");
-//   Object.values(tile).forEach(val => {
-//     if (!(-boardSize < val || val < boardSize))
-//       throw new Error("Tile outside board");
-//   });
-// }
 
 function testCornerAvailable (loc, occupiedCorners) {
   if (locationListToString(loc) in occupiedCorners) {

@@ -168,7 +168,7 @@ describe('Game', function () {
       assert.throws(() => {
         validGame.tryBuildSettlement(corner1, playerId);
       });
-    })
+    });
     it('should throw an error when placing a settlement on non neighboring tiles', function () {
       const validGame = new Game("VALID", 3);
       const playerId = 1;
@@ -176,6 +176,14 @@ describe('Game', function () {
       assert.throws(() => {
         validGame.tryBuildSettlement(invaildCorner3, playerId);
       });
-    })
+    });
+    it('should throw an error when the player doesnt have the correct resources', function () {
+      const validGame = new Game("VALID", 3);
+      const playerId = 1;
+
+      assert.throws(() => {
+        validGame.tryBuildSettlement(corner1, playerId);
+      });
+    });
   });
 });
