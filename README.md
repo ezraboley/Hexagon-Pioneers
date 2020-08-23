@@ -1,5 +1,5 @@
 # Hexagon Pioneers
-Download node and npm
+Download node and npm<br/>
 In project directory, run `npm install` from both ui and backend folder.<br/>
 Next, run `npm run backend` then `npm run frontend` from separate shells.
 
