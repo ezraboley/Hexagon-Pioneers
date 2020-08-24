@@ -18,7 +18,7 @@ class Game {
 		this.board = new Board();
 	}
 
-	getBoardState (){
+	getBoardState() {
 		return this.board.getBoardState();
 	}
 

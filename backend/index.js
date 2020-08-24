@@ -30,11 +30,11 @@ app.post('/new-game', (req, res) => {
     // res.json({players: players});
 });
 
-app.get('/board', (req, res) => {
+app.get('/:game-name/board', (req, res) => {
     res.json({board: games[gameName].getBoardState()});
 });
 
-app.post('/game-action/:gameAction', (req, res) => {
+app.post('/:game-name/game-action/:gameAction', (req, res) => {
     // This is where you do stuff
     switch (req.params.gameAction) {
         case "build-settlement":
@@ -50,5 +50,33 @@ app.post('/game-action/:gameAction', (req, res) => {
             res.json({notification: "Action not recognized"});
     }
 });
+
+// app.post('/new-game', (req, res) => {
+//     console.log(req.query)
+//     // const newGame = new Game(req.query.name, req.query.numPlayers);
+//     // res.json({notification: "Game Created"});
+//     // res.json({players: players});
+// });
+
+// app.get('/board', (req, res) => {
+//     res.json({board: games[gameName].getBoardState()});
+// });
+
+// app.post('/game-action/:gameAction', (req, res) => {
+//     // This is where you do stuff
+//     switch (req.params.gameAction) {
+//         case "build-settlement":
+//             res.json({notification: "Settlement Built"});
+//             break;
+//         case "build-road":
+//             res.json({notification: "Road Built"});
+//             break;
+//         case "end-turn":
+//             res.json({notification: "Turn ended not implemented"});
+//             break;
+//         default:
+//             res.json({notification: "Action not recognized"});
+//     }
+// });
 
 app.listen(port, () => console.log(`Listening at http://localhost:${port}`))
