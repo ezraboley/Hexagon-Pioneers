@@ -35,19 +35,8 @@ const invaildCorner3 = [{x: 0, y: -1, z: 1},
 const edge1 = [{x: -1, y: 1, z: 0,
                 x: 0, y: 0, z: 0}];
 
-let board;
-let game;
-
-function setup() {
-  board = new Board();
-  game = new Game("VALID", 3);
-}
-
-before(async () => {  
-  await setup();
-})
-
 describe('Board', function () {
+  const board = new Board();
   describe ('#constructor()', function () {
     it('should create a board of default size', function () {
       assert.equal(board._size,config.BOARD_SIZE); 
@@ -62,14 +51,14 @@ describe('Board', function () {
   describe('#getBoardState()', function () {
     it('should return a copy of the size', function () {
       const validGame = new Game("VALID", 3);
-      const boardState = game.getBoardState();
+      const boardState = validGame.getBoardState();
       boardState.size = 6;
       assert.equal(boardState.size, 6);
       assert.equal(validGame.board._size, 2);
     });
     it('should return a copy of the tiles', function () {
       const validGame = new Game("VALID", 3);
-      const boardState = game.getBoardState();
+      const boardState = validGame.getBoardState();
       boardState.tiles['0,0,0'].pos = null;
       assert.notEqual(boardState.tiles['0,0,0'].pos, validGame.board._tiles['0,0,0'].pos);
     });

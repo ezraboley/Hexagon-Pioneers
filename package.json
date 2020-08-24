@@ -4,7 +4,7 @@
   "description": "Master package",
   "main": "index.js",
   "scripts": {
-    "test": "mocha './backend/test/*.js'",
+    "test": "mocha './backend/test/top.js'",
     "frontend": "cd ui && npm start",
     "backend": "cd backend && npm run dev",
     "test-backend": "mocha './backend/test/*.js'"

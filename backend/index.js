@@ -30,11 +30,11 @@ app.post('/new-game', (req, res) => {
     // res.json({players: players});
 });
 
-app.get('/:game-name/board', (req, res) => {
+app.get('/:sessionID/board', (req, res) => {
     res.json({board: games[gameName].getBoardState()});
 });
 
-app.post('/:game-name/game-action/:gameAction', (req, res) => {
+app.post('/:sessionID/game-action/:gameAction', (req, res) => {
     // This is where you do stuff
     switch (req.params.gameAction) {
         case "build-settlement":
@@ -79,4 +79,5 @@ app.post('/:game-name/game-action/:gameAction', (req, res) => {
 //     }
 // });
 
-app.listen(port, () => console.log(`Listening at http://localhost:${port}`))
+app.listen(port, () => console.log(`Listening at http://localhost:${port}`));
+module.exports.app = app;
