@@ -27,7 +27,7 @@ class Board {
     this.generateBoard(this._size);
   }
 
-  getBoardState = () => {
+  getBoardState() {
     const boardCopy = {
       tiles: JSON.parse(JSON.stringify(this._tiles)),
       size: JSON.parse(JSON.stringify(this._size)),

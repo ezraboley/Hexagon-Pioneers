@@ -11,15 +11,15 @@ class Player {
 		this._hand[config.WOOL] = 0;
 	}
 
-	getPlayerState = () => {
-    const playerCopy = {
-      id: JSON.parse(JSON.stringify(this._id)),
-      hand: JSON.parse(JSON.stringify(this._hand))
-    };
+    getPlayerState() {
+        const playerCopy = {
+            id: JSON.parse(JSON.stringify(this._id)),
+            hand: JSON.parse(JSON.stringify(this._hand))
+        };
     return playerCopy;
   }
 
-  takeResource = (type, num) => {
+  takeResource(type, num) {
   	this._hand[type] += num;
   }
 }

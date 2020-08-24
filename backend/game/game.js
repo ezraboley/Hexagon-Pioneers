@@ -18,15 +18,15 @@ class Game {
 		this.board = new Board();
 	}
 
-	getBoardState = () => {
+	getBoardState (){
 		return this.board.getBoardState();
 	}
 
-	getPlayerState = (playerID) => {
+	getPlayerState(playerID) {
 		return this.players[playerID].getPlayerState();
 	}
 
-	getNumPlayers = () => {
+	getNumPlayers() {
 		return Object.keys(this.players).length;
 	}
 
