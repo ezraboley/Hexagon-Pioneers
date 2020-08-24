@@ -1,13 +1,18 @@
 const cors = require('cors');
 const express = require('express');
 
-const {Game} = require('./data');
+const {Game} = require('./game');
 const {config}  = require('./config.js');
 
 const app = express();
 const port = 8000;
 const games = {};
 
+const gameName = 'TEST';
+const gamePlayers = 4;
+
+const newGame = new Game(gameName, gamePlayers);
+games[newGame] = newGame;
 app.use(cors());
 
 // THIS DEFINES THE API, UNVALIDATED REQUESTS ARE SEND TO GAME.JS AND
@@ -20,15 +25,13 @@ app.get('/', (req, res) => {
 
 app.post('/new-game', (req, res) => {
     console.log(req.query)
-    const newGame = new Game(req.query.name, req.query.numPlayers);
-    games[newGame] = newGame;
+    // const newGame = new Game(req.query.name, req.query.numPlayers);
     // res.json({notification: "Game Created"});
     // res.json({players: players});
 });
 
 app.get('/board', (req, res) => {
-    let b = new Board(config.BOARD_SIZE);
-    res.json({board: b});
+    res.json({board: games[gameName].getBoardState()});
 });
 
 app.post('/game-action/:gameAction', (req, res) => {
