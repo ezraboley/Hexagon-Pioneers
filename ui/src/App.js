@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
-import {Coordinate} from './Board'
+import {Coordinate} from './Board/Board'
 import { makeStyles } from '@material-ui/core/styles';
 import Snackbar from '@material-ui/core/Snackbar';
 import './App.css';
-import Board from './Board.js';
+import Board from './Board/Board.js';
 import styled from 'styled-components';
-import Dashboard from './Dashboard.js';
+import Dashboard from './Navigation/Sidebar.js';
 import config from './config'
+import ConfirmationButton from './Overlay/ConfirmationButton';
+
 const useStyles = makeStyles((theme) => ({
   close: {
     padding: theme.spacing(0.5),
@@ -15,7 +17,7 @@ const useStyles = makeStyles((theme) => ({
 
 function App() {    
 
-  const possibleActions = ["Build Town, Build Road, End Turn"]
+  const possibleActions = ["Build Town", "Build Road", "End Turn"]
 
   function finalizeCorner(board, activeCorner) {
     const pointIsEqual = (p1, p2) => {
@@ -89,8 +91,9 @@ function App() {
   const [board, setBoard] = useState([]);
   const [boardSize, setBoardSize] = useState(0)
   const [activeCorner, setActiveCorner] = useState({x: 0, y:0, fill: "none", key: null})
+  const [currentAction, setCurrentAction] = useState(null)
+  const [packet, setPacket] = useState(null)
 
-  
   React.useEffect(() => {
     if (snackPack.length && !messageInfo) {
       // Set a new snack when we don't have an active one
@@ -136,40 +139,62 @@ function App() {
     setMessageInfo(undefined);
   };
 
-  const handlePress = (button) => () => {
-    console.log('button handled' + button);
-    
+  const handlePress = (button) => async () => {    
     const btnStr = button.trim().replace(/\s+/g, '-').toLowerCase()
     const url = `${config.url}game-action/${btnStr}`
-    const packet = {board: board, corner: finalizeCorner(board, activeCorner)};
-    console.log(packet)
-    fetch(url, {
-        method: 'POST',
+    setPacket({board: board, corner: finalizeCorner(board, activeCorner)})
+    if (btnStr === 'end-turn') {
+      try {
+        let response = await fetch(url, {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(packet)
+        })
+        let data = await response.json() 
+        handleNewSnack(data.notification)();
+      } catch (e) { console.error(`Error: ${e}`) }
+    } else {
+      setCurrentAction(btnStr)
+    }
+  }
+
+  async function postData(data, action) {
+    const packet = {board: board, corner: finalizeCorner(board, activeCorner)}
+    const url = `${config.url}${action}`
+    try {
+        let response = await fetch(url, {
+            method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify(packet)
-    })
-    .then(data => data.json())
-    .then(data => {
-      console.log(data);
-      handleNewSnack(data.notification)();;
-    })
-    .catch((error) => {
-      console.error('Error:', error);
-    });
-  }
+        body: JSON.stringify(data)
+      })
+    console.log(response)
+    } catch (e) { 
+      console.error(`Error: ${e}`)
+    }
+    setCurrentAction(null)
+    setActiveCorner({})
+}
 
   const classes = useStyles();
 
     return (
    <AppContainer>
-      <Dashboard possibleActions={possibleActions} handlePress={handlePress} boardState={board} userInfo={userInfo} handleNewSnack={handleNewSnack}/>
+      <Dashboard actions={possibleActions} handlePress={handlePress} boardState={board} userInfo={userInfo} handleNewSnack={handleNewSnack}>
       {boardSize === 0 ? 
         null : 
-        <Board activeCorner={activeCorner} size={boardSize} 
-        boardState={board} setBoardState={setBoard} setActiveCorner={setActiveCorner}/>
+        (
+          <Board activeCorner={activeCorner} size={boardSize} 
+            boardState={board} setBoardState={setBoard} setActiveCorner={setActiveCorner}/>
+        )
       }
+      {!currentAction ? null : 
+        <ConfirmationButton onClick={postData} action={currentAction} data={packet}/>
+        }
+      </Dashboard>
       <Snackbar
         key={messageInfo ? messageInfo.key : undefined}
         anchorOrigin={{

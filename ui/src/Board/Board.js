@@ -1,7 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import Hexagon from './Hexagon.js';
 import styled from 'styled-components';
-import config from './config'
+import config from '../config'
+import TownPiece from '../GamePieces/TownPiece'
+import CityPiece from '../GamePieces/CityPiece'
+import RoadPiece from '../GamePieces/RoadPiece'
+import ConfirmationButton from '../Overlay/ConfirmationButton.jsx';
 
 export class Coordinate {
     constructor(x, y, z) {
@@ -40,7 +44,7 @@ export default function Board(props) {
             {
                 x: corner.x,
                 y: corner.y,
-                fill: "red",
+                fill: "#3f51b5",
                 key: pos
             });
     }
@@ -87,15 +91,7 @@ export default function Board(props) {
             <BoardSpan/>
             <BoardGraphic viewBox="0 0 600 600" xmlns="http://www.w3.org/2000/svg">
                 {board}
-                <circle 
-                    cx={props.activeCorner.x} 
-                    cy={props.activeCorner.y} 
-                    r={6} 
-                    fill={props.activeCorner.fill}
-                    stroke={"black"}
-                    strokeWidth={4}
-                    style={{zIndex: 2}}>
-                </circle>
+                <TownPiece {...props.activeCorner}/>
             </BoardGraphic>
             <BoardSpan/>
         </BoardContainer>
