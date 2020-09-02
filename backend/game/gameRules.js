@@ -16,14 +16,14 @@ class GameRules {
     testPlayerID(game.getNumPlayers(), playerID);
     testLogicalPosition(loc, game.getBoardState().tiles);
     testSpaceAvailable(loc, game.getBoardState().occupiedCorners);
-    testPlayerCanCompletePurchase(config.PRICES.SETTLEMENT, game.getPlayerState(playerID).hand);
+    //testPlayerCanCompletePurchase(config.PRICES.SETTLEMENT, game.getPlayerState(playerID).hand);
   }
 
   static buildRoad (game, loc, playerID) {
     testPlayerID(game.getNumPlayers(), playerID);
     testLogicalPosition(loc, game.getBoardState().tiles);
     testSpaceAvailable(loc, game.getBoardState().roads);
-    testPlayerCanCompletePurchase(config.PRICES.ROAD, game.getPlayerState(playerID).hand);
+    //testPlayerCanCompletePurchase(config.PRICES.ROAD, game.getPlayerState(playerID).hand);
   }
 }
 

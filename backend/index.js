@@ -35,54 +35,32 @@ app.post('/', (req, res) => {
   }
 });
 
-// app.get('/:sessionID/board', (req, res) => {
-//   res.json({board: games[gameName].getBoardState()});
-// });
-
-app.post('/:sessionID/game-action/:gameAction', (req, res) => {
-  // This is where you do stuff
-  switch (req.params.gameAction) {
-    case "build-settlement":
-      res.json({notification: "Settlement Built"});
-      break;
-    case "build-road":
-      res.json({notification: "Road Built"});
-      break;
-    case "end-turn":
-      res.json({notification: "Turn ended not implemented"});
-      break;
-    default:
-      res.json({notification: "Action not recognized"});
-  }
+app.get('/:sessionID/board', (req, res) => {
+  res.json({board: games[req.params.sessionID].getBoardState()});
 });
 
-// app.post('/new-game', (req, res) => {
-//   console.log(req.query)
-//   // const newGame = new Game(req.query.name, req.query.numPlayers);
-//   // res.json({notification: "Game Created"});
-//   // res.json({players: players});
-// });
-
-// app.get('/board', (req, res) => {
-//   res.json({board: games[gameName].getBoardState()});
-// });
-
-// app.post('/game-action/:gameAction', (req, res) => {
-//   // This is where you do stuff
-//   switch (req.params.gameAction) {
-//     case "build-settlement":
-//       res.json({notification: "Settlement Built"});
-//       break;
-//     case "build-road":
-//       res.json({notification: "Road Built"});
-//       break;
-//     case "end-turn":
-//       res.json({notification: "Turn ended not implemented"});
-//       break;
-//     default:
-//       res.json({notification: "Action not recognized"});
-//   }
-// });
+app.post('/:sessionID', (req, res) => {
+  const game = games[req.params.sessionID];
+  // This is where you do stuff
+  try {
+    switch (req.body.action) {
+      case "buildSettlement":
+        game.tryBuildSettlement(req.body.loc, req.body.playerID);
+        res.json({notification: "Settlement built"});
+        break;
+      case "build-road":
+        res.json({notification: "Road built"});
+        break;
+      case "end-turn":
+        res.json({notification: "Turn ended not implemented"});
+        break;
+      default:
+        res.json({notification: "Action not recognized"});
+    }
+  } catch (err) {
+    res.json({notification: "Action failed"});
+  }
+});
 
 app.get('*', function(req, res){
   res.status(404).send('Page not found');
