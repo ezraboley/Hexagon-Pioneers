@@ -4,13 +4,13 @@ function importTest(name, path) {
     });
 }
 
-describe("top", function () {
-    before(function () {
-        console.log("Running test suite");
-    });
+describe("Full Test Suite", function () {
+    // before(function () {
+    //     console.log("Running test suite");
+    // });
     importTest("game", './testGame');
     importTest("index", './testIndex');
-    after(function () {
-        console.log("Tests completed");
-    });
+    // after(function () {
+    //     console.log("Tests completed");
+    // });
 });

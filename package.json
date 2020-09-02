@@ -4,10 +4,10 @@
   "description": "Master package",
   "main": "index.js",
   "scripts": {
-    "test": "mocha './backend/test/top.js'",
+    "test": "mocha --exit './backend/test/top.js'",
     "frontend": "cd ui && npm start",
     "backend": "cd backend && npm run dev",
-    "test-backend": "mocha './backend/test/*.js'"
+    "test-backend": "mocha --exit './backend/test/*.js'"
   },
   "repository": {
     "type": "git",
