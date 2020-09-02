@@ -9,6 +9,7 @@ class Game {
 		GameRules.numPlayers(numPlayers);
 
 		this.gameName = gameName;
+		this.gameID = gameName.toLowerCase().replace(' ', '-');
 		const players = {};
 		let i;
 		for (i = 1; i <= numPlayers; i++) {
@@ -48,7 +49,7 @@ class Game {
 		// static id
 		// dynamic resource c, dev c, v points
 	toString() {
-		return this.gameName;
+		return this.gameID;
 	}
 }
 
