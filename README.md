@@ -1,5 +1,5 @@
 # Hexagon Pioneers
-Any similarities to any other game consiting of building towns on hexagons is completely coincidental. Completely open source and free minimalist game that you can play with friends and family!
+Completely open source and free minimalist game that you can play with friends and family! Any similarities to any other game consiting of building towns on hexagons is completely coincidental.
 
 ## Running the Project
 1. Download node and npm
