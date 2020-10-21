@@ -46,22 +46,22 @@ export default function Board(props) {
     }
     
     function buildBoard() {
-        if (props.boardState === undefined) 
+        if (!props.boardState || !props.boardSize) 
             return null;
         let positions = Object.keys(props.boardState);
         let pathStrs = [];
         let newBoard = props.boardState;
         positions.forEach((pos) => {
             let offset = 300;
-            let {x,y,z} = props.boardState[pos].pos;
+            let {x, y, z} = props.boardState[pos].pos;
             
             let points = Hexagon.getPoints(
                 (offset + 
-                    (x-y) * Hexagon.WIDTH/2),
+                    (x - y) * Hexagon.WIDTH / 2),
                 (offset + 
                     (z) * (Hexagon.HEIGHT * 0.75)));
             newBoard[pos].points = points;
-            pathStrs.push( 
+            pathStrs.push(
                 <Hexagon
                     handleClick={clickHandler}
                     resource= {props.boardState[pos].res.type} 
@@ -79,6 +79,10 @@ export default function Board(props) {
         setBoard(buildBoard())
     }, [props.boardState])
 
+    if (boardSize == 0) {
+        return null;
+    }
+
     if (board === null) 
         return null;
 
@@ -86,7 +90,7 @@ export default function Board(props) {
         <BoardContainer>
             <BoardSpan/>
             <BoardGraphic viewBox="0 0 600 600" xmlns="http://www.w3.org/2000/svg">
-                {board}
+                { board }
                 <circle 
                     cx={props.activeCorner.x} 
                     cy={props.activeCorner.y} 
@@ -94,7 +98,7 @@ export default function Board(props) {
                     fill={props.activeCorner.fill}
                     stroke={"black"}
                     strokeWidth={4}
-                    style={{zIndex: 2}}>
+                    style={{ zIndex: 2 }}>
                 </circle>
             </BoardGraphic>
             <BoardSpan/>

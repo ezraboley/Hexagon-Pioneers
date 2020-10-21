@@ -26,10 +26,13 @@ app.get('/', (req, res) => {
 
 app.post('/', (req, res) => {
   try {
+    console.log(req.body.gameName);
+    console.log(req.body);
     const newGame = new Game(req.body.gameName, req.body.numPlayers);
     games[newGame] = newGame;
     res.redirect("/" + newGame.toString());
   } catch (err) {
+    console.log(err);
     res.status(400);
     res.json({notification: "Failed to create game"});
   }

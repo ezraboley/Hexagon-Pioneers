@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import {Coordinate} from './Board/Board'
+import PioneerSnackbar from './PioneerSnackbar';
+import {Coordinate} from './Board/Board';
 import { makeStyles } from '@material-ui/core/styles';
 import Snackbar from '@material-ui/core/Snackbar';
 import './App.css';
@@ -8,6 +9,7 @@ import styled from 'styled-components';
 import Dashboard from './Navigation/Sidebar.js';
 import config from './config'
 import ConfirmationButton from './Overlay/ConfirmationButton';
+import { ClickAwayListener } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
   close: {
@@ -19,38 +21,40 @@ function App() {
 
   const possibleActions = ["Build Town", "Build Road", "End Turn"]
 
+  function rollDice() {
+    let die1 = Math.floor(Math.random() * Math.floor(6)) + 1;
+    let die2 = Math.floor(Math.random() * Math.floor(6)) + 1;
+    let total = die1 + die2;
+    handleNewSnack(`Dice: ${die1} + ${die2} = ${total}`)();
+    return total;
+  }
+
   function finalizeCorner(board, activeCorner) {
     const pointIsEqual = (p1, p2) => {
-      let x1 = p1.x;
-      let x2 = p2.x;
-      let y1 = p1.y;
-      let y2 = p2.y;
-      
+      let {x: x1, y: y1} = p1;
+      let {x: x2, y: y2} = p2;
       let margin = 5;
-
       return (
-          (margin + x1 >= x2 && x2 >= x1 - margin)
-      && (margin + y1 >= y2 && y2 >= y1 - margin));
-    }
+          (margin + x1 >= x2 && x2 >= x1 - margin) && 
+          (margin + y1 >= y2 && y2 >= y1 - margin));
+    };
 
-    if (activeCorner.key === null) {
+    if (!activeCorner.key) {
        return;
     }
 
     let vals = activeCorner.key.split(',');
     
     let pos = {
-        x: parseInt(vals[0]), 
-        y: parseInt(vals[1]), 
+        x: parseInt(vals[0]),
+        y: parseInt(vals[1]),
         z: parseInt(vals[2])
     };
-    let cornerX = activeCorner.x;
-    let cornerY = activeCorner.y;
 
     let neighbors = [
         new Coordinate(pos.x + 1, pos.y - 1, pos.z),
-        new Coordinate(pos.x + 1, pos.y,pos.z - 1),
-        new Coordinate(pos.x, pos.y + 1,pos.z - 1),
+        new Coordinate(pos.x + 1, pos.y, pos.z - 1),
+        new Coordinate(pos.x, pos.y + 1, pos.z - 1),
         new Coordinate(pos.x - 1, pos.y + 1, pos.z),
         new Coordinate(pos.x - 1, pos.y, pos.z + 1),
         new Coordinate(pos.x, pos.y - 1, pos.z + 1),
@@ -59,12 +63,12 @@ function App() {
     let corners = [];
     corners.push(new Coordinate(pos.x, pos.y, pos.z));
 
-    neighbors.forEach((n) => {
-        if (board[n] === undefined) return;
-        for (let p of board[n].points) {
+    neighbors.forEach((neighbor) => {
+        if (board[neighbor] === undefined) return;
+        for (let p of board[neighbor].points) {
             // Gotta do some fuzzy matching
-            if (pointIsEqual(p, {x: cornerX, y: cornerY})) {
-                corners.push(n);
+            if (pointIsEqual(p, activeCorner)) {
+                corners.push(neighbor);
                 break;
             }
         } 
@@ -89,10 +93,10 @@ function App() {
   const [open, setOpen] = useState(false);
   const [messageInfo, setMessageInfo] = useState(undefined);
   const [board, setBoard] = useState([]);
-  const [boardSize, setBoardSize] = useState(0)
-  const [activeCorner, setActiveCorner] = useState({x: 0, y:0, fill: "none", key: null})
-  const [currentAction, setCurrentAction] = useState(null)
-  const [packet, setPacket] = useState(null)
+  const [boardSize, setBoardSize] = useState(0);
+  const [activeCorner, setActiveCorner] = useState({x: 0, y:0, fill: "none", key: null});
+  const [currentAction, setCurrentAction] = useState(null);
+  const [packet, setPacket] = useState(null);
 
   React.useEffect(() => {
     if (snackPack.length && !messageInfo) {
@@ -106,10 +110,9 @@ function App() {
     }
   }, [snackPack, messageInfo, open]);
 
-
   React.useEffect(() => {
     const getBoard = async () => {
-      const url = `${config.url}board`;
+      const url = `${config.url}1/board`;
       try {
         let res = await fetch(url)
         let data = await res.json()
@@ -123,23 +126,12 @@ function App() {
     getBoard()
   }, [])
 
-
   const handleNewSnack = (message) => () => {
     setSnackPack((prev) => [...prev, { message, key: message }]);
   };
 
-  const handleClose = (event, reason) => {
-    if (reason === 'clickaway') {
-      return;
-    }
-    setOpen(false);
-  };
-
-  const handleExited = () => {
-    setMessageInfo(undefined);
-  };
-
   const handlePress = (button) => async () => {    
+    rollDice();
     const btnStr = button.trim().replace(/\s+/g, '-').toLowerCase()
     const url = `${config.url}game-action/${btnStr}`
     setPacket({board: board, corner: finalizeCorner(board, activeCorner)})
@@ -166,14 +158,14 @@ function App() {
     try {
         let response = await fetch(url, {
             method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(data)
-      })
-    console.log(response)
+            headers: {
+              'Content-Type': 'application/json'
+            },
+          body: JSON.stringify(data)
+      });
+      console.log(response);
     } catch (e) { 
-      console.error(`Error: ${e}`)
+      console.error(`Error: ${e}`);
     }
     setCurrentAction(null)
     setActiveCorner({})
@@ -184,29 +176,20 @@ function App() {
     return (
    <AppContainer>
       <Dashboard actions={possibleActions} handlePress={handlePress} boardState={board} userInfo={userInfo} handleNewSnack={handleNewSnack}>
-      {boardSize === 0 ? 
-        null : 
-        (
-          <Board activeCorner={activeCorner} size={boardSize} 
-            boardState={board} setBoardState={setBoard} setActiveCorner={setActiveCorner}/>
-        )
-      }
+        <Board activeCorner={activeCorner} 
+                 size={boardSize} 
+                 boardState={board} 
+                 setBoardState={setBoard} 
+                 setActiveCorner={setActiveCorner} />
       {!currentAction ? null : 
-        <ConfirmationButton onClick={postData} action={currentAction} data={packet}/>
-        }
+          <ConfirmationButton onClick={postData} action={currentAction} data={packet}/>
+      }
       </Dashboard>
-      <Snackbar
-        key={messageInfo ? messageInfo.key : undefined}
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'right',
-        }}
-        open={open}
-        autoHideDuration={6000}
-        onClose={handleClose}
-        onExited={handleExited}
-        message={messageInfo ? messageInfo.message : undefined}
-      />
+      <PioneerSnackbar 
+        open={open} 
+        messageInfo={messageInfo} 
+        setOpen={setOpen} 
+        setMessageInfo={setMessageInfo} />
    </AppContainer>
   );
 }
