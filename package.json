@@ -20,6 +20,6 @@
   },
   "homepage": "https://github.com/ezraboley/Hexagon-Pioneers#readme",
   "devDependencies": {
-    "mocha": "^8.0.1"
+    "mocha": "^8.4.0"
   }
 }
